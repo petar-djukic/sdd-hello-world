@@ -1,0 +1,58 @@
+id: sdd-hello-world
+title: SDD Hello World
+
+executive_summary: |
+  We build a minimal Go command-line application that prints "Hello, World!" to
+  standard output and exits with code 0. The project exists as a test fixture
+  for the cobbler-scaffold orchestrator. It validates that scaffold push,
+  measure, stitch, and generator lifecycle targets work correctly against a
+  real Go module published on the Go module proxy.
+
+problem: |
+  The cobbler-scaffold end-to-end tests need a stable, minimal Go project to
+  scaffold and exercise mage targets against. Using a large, actively developed
+  project like go-unix-utils couples test stability to ongoing spec changes.
+  A dedicated test fixture isolates cobbler-scaffold validation from production
+  project evolution.
+
+what_this_does: |
+  We provide the simplest possible Go binary (one file, zero external
+  dependencies) wrapped in the SDD project structure. The project has a VISION
+  document so cobbler's measure phase has a specification to read. The project
+  is tagged and published as a Go module so PrepareTestRepo can download it
+  via the Go module proxy.
+
+why_we_build_this: |
+  Cobbler-scaffold needs a test target that is small, stable, and exercises the
+  full scaffolding pipeline. This project fills that role. It decouples test
+  reliability from changes in go-unix-utils or crumbs.
+
+success_criteria:
+  - dimension: Build correctness
+    target: "go build ./cmd/sdd-hello-world succeeds with exit code 0"
+  - dimension: Runtime correctness
+    target: "Binary prints exactly 'Hello, World!' followed by a newline and exits 0"
+  - dimension: Scaffold compatibility
+    target: "mage scaffold:push produces a working orchestrator setup; mage -l lists all targets"
+  - dimension: Module availability
+    target: "go list -m -versions returns at least one tagged version"
+
+implementation_phases:
+  - phase: "1"
+    focus: Initial project
+    deliverables: go.mod, main.go, VISION.yaml, LICENSE, README.md
+  - phase: "2"
+    focus: Scaffold integration
+    deliverables: Scaffolded orchestrator files, configuration.yaml, tagged release
+
+risks:
+  - risk: Go module proxy caching delay
+    impact: Low
+    likelihood: Low
+    mitigation: Wait for proxy propagation before running e2e tests
+
+not: |
+  We do not handle command-line arguments. We do not read input. We do not
+  write to files. We do not use external packages. We do not write tests
+  beyond what cobbler-scaffold's e2e suite provides. This is not a template
+  for production SDD projects; it is a test fixture.
