@@ -220,9 +220,9 @@ document_types:
       (major.minor). Minor releases validate completed major releases.
 
 naming_conventions:
-  prd: "prd[NNN]-[feature-name].yaml (e.g., prd001-cupboard-core.yaml)"
-  use_case: "rel[NN].[N]-uc[NNN]-[short-name].yaml (e.g., rel01.0-uc001-cupboard-lifecycle.yaml)"
-  test_suite: "test-[use-case-id].yaml (e.g., test-rel01.0-uc001-cupboard-lifecycle.yaml)"
+  prd: "prd[NNN]-[feature-name].yaml (e.g., prd001-hello-world-binary.yaml)"
+  use_case: "rel[NN].[N]-uc[NNN]-[short-name].yaml (e.g., rel02.0-uc001-build-hello-world.yaml)"
+  test_suite: "test-[use-case-id].yaml (e.g., test-rel02.0-uc001-build-hello-world.yaml)"
   engineering_guideline: "eng[NN]-[short-name].yaml (e.g., eng01-git-integration.yaml)"
   architecture: "ARCHITECTURE.yaml"
   vision: "VISION.yaml"
