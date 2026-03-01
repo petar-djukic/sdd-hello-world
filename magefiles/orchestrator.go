@@ -22,17 +22,16 @@ type Generator mg.Namespace
 // Scaffold groups the scaffold install/uninstall targets.
 type Scaffold mg.Namespace
 
-// Beads groups issue-tracker lifecycle targets.
-type Beads mg.Namespace
-
 // Prompt groups prompt preview targets.
 type Prompt mg.Namespace
 
 // Stats groups the stats targets (LOC, tokens).
 type Stats mg.Namespace
 
-// Test groups the testing targets.
-type Test mg.Namespace
+// Tests: run directly with go test:
+//   go test -tags=usecase -v -count=1 -timeout 1800s ./tests/rel01.0/...          # all
+//   go test -tags=usecase -v ./tests/rel01.0/uc001/                               # one UC
+//   go test -tags=usecase -bench=. -benchtime=1x -run=^$ ./tests/rel01.0/uc008/   # benchmarks
 
 // baseCfg holds the configuration loaded from configuration.yaml.
 var baseCfg orchestrator.Config
@@ -64,10 +63,10 @@ func logf(format string, args ...any) {
 
 // --- Top-level targets ---
 
-// Init initializes the project (beads).
+// Init initializes the project.
 func Init() error { return newOrch().Init() }
 
-// Reset performs a full reset: cobbler, generator, beads.
+// Reset performs a full reset: cobbler and generator.
 func Reset() error { return newOrch().FullReset() }
 
 // Build compiles the project binary.
@@ -98,35 +97,6 @@ func Tag() error { return newOrch().Tag() }
 // configuration.yaml. Pass "." for the current directory.
 func (Scaffold) Pop(target string) error { return newOrch().Uninstall(target) }
 
-// --- Test targets ---
-
-// Unit runs go test on all packages.
-func (Test) Unit() error { return newOrch().TestUnit() }
-
-// All runs unit and E2E tests.
-func (Test) All() error { return newOrch().TestAll() }
-
-// Uc001OrchestratorInitialization runs UC001 E2E tests (init, reset, defaults).
-func (Test) Uc001OrchestratorInitialization() error { return newOrch().TestE2EByUseCase("001") }
-
-// Uc002GenerationLifecycle runs UC002 E2E tests (start, stop, list, run, switch).
-func (Test) Uc002GenerationLifecycle() error { return newOrch().TestE2EByUseCase("002") }
-
-// Uc003MeasureWorkflow runs UC003 E2E tests (measure creates issues).
-func (Test) Uc003MeasureWorkflow() error { return newOrch().TestE2EByUseCase("003") }
-
-// Uc004StitchWorkflow runs UC004 E2E tests (stitch executes tasks).
-func (Test) Uc004StitchWorkflow() error { return newOrch().TestE2EByUseCase("004") }
-
-// Uc005ResumeRecovery runs UC005 E2E tests (resume from interruption).
-func (Test) Uc005ResumeRecovery() error { return newOrch().TestE2EByUseCase("005") }
-
-// Uc006ScaffoldOperations runs UC006 E2E tests (scaffold push/pop).
-func (Test) Uc006ScaffoldOperations() error { return newOrch().TestE2EByUseCase("006") }
-
-// Uc007BuildTooling runs UC007 E2E tests (build, install, clean, stats).
-func (Test) Uc007BuildTooling() error { return newOrch().TestE2EByUseCase("007") }
-
 // --- Cobbler targets ---
 
 // Measure assesses project state and proposes new tasks via Claude.
@@ -143,8 +113,13 @@ func (Cobbler) Reset() error { return newOrch().CobblerReset() }
 // Start begins a new generation trail.
 func (Generator) Start() error { return newOrch().GeneratorStart() }
 
-// Run executes N cycles of measure + stitch within the current generation.
-func (Generator) Run() error { return newOrch().GeneratorRun() }
+// Run executes measure + stitch cycles using the generation.cycles value in configuration.yaml.
+// Use RunN to override the cycle count for a single invocation.
+func (Generator) Run() error { return newOrch().GeneratorRun(0) }
+
+// RunN executes exactly n cycles of measure + stitch within the current generation.
+// Pass n > 0 to override generation.cycles in configuration.yaml for this run only.
+func (Generator) RunN(n int) error { return newOrch().GeneratorRun(n) }
 
 // Resume recovers from an interrupted run and continues.
 func (Generator) Resume() error { return newOrch().GeneratorResume() }
@@ -177,10 +152,3 @@ func (Prompt) Measure() error { return newOrch().DumpMeasurePrompt() }
 // Stitch prints the assembled stitch prompt to stdout.
 func (Prompt) Stitch() error { return newOrch().DumpStitchPrompt() }
 
-// --- Beads targets ---
-
-// Init initializes the beads issue tracker.
-func (Beads) Init() error { return newOrch().BeadsInit() }
-
-// Reset clears beads issue history.
-func (Beads) Reset() error { return newOrch().BeadsReset() }

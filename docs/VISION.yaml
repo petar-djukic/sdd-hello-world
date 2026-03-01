@@ -28,14 +28,14 @@ why_we_build_this: |
   reliability from changes in go-unix-utils or crumbs.
 
 success_criteria:
-  - dimension: Build correctness
-    target: "go build ./cmd/sdd-hello-world succeeds with exit code 0"
-  - dimension: Runtime correctness
-    target: "Binary prints exactly 'Hello, World!' followed by a newline and exits 0"
-  - dimension: Scaffold compatibility
-    target: "mage scaffold:push produces a working orchestrator setup; mage -l lists all targets"
-  - dimension: Module availability
-    target: "go list -m -versions returns at least one tagged version"
+  build_correctness: |
+    go build ./cmd/sdd-hello-world succeeds with exit code 0.
+  runtime_correctness: |
+    Binary prints exactly 'Hello, World!' followed by a newline and exits 0.
+  scaffold_compatibility: |
+    mage scaffold:push produces a working orchestrator setup; mage -l lists all targets.
+  module_availability: |
+    go list -m -versions returns at least one tagged version.
 
 implementation_phases:
   - phase: "1"
