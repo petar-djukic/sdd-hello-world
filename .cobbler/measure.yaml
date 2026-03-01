@@ -1,0 +1,85 @@
+- index: 0
+  title: Create Hello World binary entry point (VISION runtime_correctness, build_correctness)
+  description: |-
+    deliverable_type: code
+
+    required_reading:
+      - docs/VISION.yaml (success_criteria section -- runtime_correctness and build_correctness)
+      - docs/ARCHITECTURE.yaml (components section -- Binary component; project_structure section)
+      - cmd/sdd-hello-world/version.go (current seed file that must be modified)
+
+    files:
+      - path: cmd/sdd-hello-world/main.go
+        action: create
+        note: Binary entry point -- prints "Hello, World!" to stdout and exits 0
+      - path: cmd/sdd-hello-world/version.go
+        action: modify
+        note: Remove main() function and fmt import -- keep only the Version constant
+
+    requirements:
+      - id: R1
+        text: |
+          Create cmd/sdd-hello-world/main.go with a main() function that prints
+          exactly "Hello, World!" followed by a newline to stdout and exits with
+          code 0. Use fmt.Println. This satisfies VISION success_criteria
+          runtime_correctness.
+      - id: R2
+        text: |
+          Modify cmd/sdd-hello-world/version.go to contain only the package
+          declaration, copyright header, and the Version constant. Remove the
+          main() function and the "fmt" import. The Version constant value must
+          remain unchanged.
+      - id: R3
+        text: |
+          Both Go files must begin with the SPDX copyright header per
+          go-style constitution: "// Copyright (c) 2026 Petar Djukic. All rights
+          reserved." followed by "// SPDX-License-Identifier: MIT", then a blank
+          line, then the package clause.
+      - id: R4
+        text: |
+          The binary must use only the Go standard library. No external packages
+          may be added to go.mod. This satisfies ARCHITECTURE design decision 1
+          (zero-dependency binary).
+      - id: R5
+        text: |
+          The binary must compile successfully with "go build ./cmd/sdd-hello-world".
+          This satisfies VISION success_criteria build_correctness.
+
+    design_decisions:
+      - id: D1
+        text: |
+          Use only fmt.Println("Hello, World!") in main(). The VISION
+          runtime_correctness criterion requires the binary to print exactly
+          "Hello, World!" followed by a newline. fmt.Println provides the
+          trailing newline.
+      - id: D2
+        text: |
+          The main() function belongs in main.go, not version.go. Per
+          ARCHITECTURE project_structure, main.go is the "Binary entry point"
+          and version.go is the "Version constant (seed file, populated at
+          generation time)."
+      - id: D3
+        text: |
+          Do not reference or print the Version constant from main(). The
+          binary's sole behavior is printing "Hello, World!" per VISION. The
+          Version constant exists for the orchestrator's use, not for runtime
+          output.
+
+    acceptance_criteria:
+      - id: AC1
+        text: "go build ./cmd/sdd-hello-world succeeds with exit code 0"
+      - id: AC2
+        text: |
+          Running the compiled binary prints exactly "Hello, World!" followed
+          by a newline to stdout and exits with code 0
+      - id: AC3
+        text: |
+          cmd/sdd-hello-world/version.go contains only the package declaration,
+          copyright header, and "const Version" -- no func main(), no import
+      - id: AC4
+        text: |
+          cmd/sdd-hello-world/main.go exists with func main() that calls
+          fmt.Println("Hello, World!")
+      - id: AC5
+        text: Both Go files begin with the SPDX copyright header on lines 1-2
+  dependency: -1
