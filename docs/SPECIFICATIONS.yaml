@@ -6,10 +6,10 @@ title: SDD Hello World Specifications
 
 overview: |
   SDD Hello World is a minimal test fixture for cobbler-scaffold. The project
-  has no PRDs, use cases, or test suites of its own — its purpose is to provide
-  a stable, minimal Go module that cobbler-scaffold's end-to-end tests can
-  scaffold against and exercise. For goals and boundaries see VISION.yaml. For
-  components and structure see ARCHITECTURE.yaml.
+  specifies a Go binary that prints "Hello, World!" and exits 0. The
+  cobbler-scaffold generation pipeline reads the PRD and produces the Go source
+  files. For goals and boundaries see VISION.yaml. For components and structure
+  see ARCHITECTURE.yaml.
 
 roadmap_summary:
   - version: "01.0"
@@ -17,20 +17,48 @@ roadmap_summary:
     use_cases_done: 0
     use_cases_total: 0
     status: done
+  - version: "02.0"
+    name: Hello world binary from specifications
+    use_cases_done: 0
+    use_cases_total: 1
+    status: pending
 
-prd_index: []
+prd_index:
+  - id: prd001-hello-world-binary
+    title: Hello World Binary
+    summary: |
+      Specifies the Go binary that prints "Hello, World!" and exits 0. Covers
+      file structure (main.go, version.go), runtime behavior, and zero-dependency
+      constraint.
+    path: docs/specs/product-requirements/prd001-hello-world-binary.yaml
 
-use_case_index: []
+use_case_index:
+  - id: rel02.0-uc001-build-hello-world
+    title: Build and Run Hello World Binary
+    release: "02.0"
+    status: pending
+    test_suite: test-rel02.0
+    path: docs/specs/use-cases/rel02.0-uc001-build-hello-world.yaml
 
-test_suite_index: []
+test_suite_index:
+  - id: test-rel02.0
+    title: Test Suite for Release 02.0 — Hello World Binary
+    traces:
+      - rel02.0-uc001-build-hello-world
+    test_case_count: 5
+    path: docs/specs/test-suites/test-rel02.0.yaml
 
-prd_to_use_case_mapping: []
+prd_to_use_case_mapping:
+  - use_case: rel02.0-uc001-build-hello-world
+    prd: prd001-hello-world-binary
+    why_required: |
+      The use case exercises all PRD requirements by building and running the
+      binary, verifying output, exit code, and file structure.
+    coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3
 
 coverage_gaps: |
-  This project has no formal PRDs or use cases by design. Its specification
-  is the VISION.yaml success criteria: the binary builds, prints "Hello, World!",
-  and the scaffold targets operate correctly. Formal specs are unnecessary for
-  a test fixture whose complexity is bounded.
+  No coverage gaps. All prd001-hello-world-binary requirements are covered by
+  the rel02.0-uc001-build-hello-world use case and its test suite.
 
 references:
   - VISION.yaml

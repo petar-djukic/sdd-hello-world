@@ -1,0 +1,47 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: test-rel02.0
+title: Test Suite for Release 02.0 — Hello World Binary
+
+release: "02.0"
+
+traces:
+  - rel02.0-uc001-build-hello-world
+
+preconditions:
+  - Go source files cmd/sdd-hello-world/main.go and cmd/sdd-hello-world/version.go exist in the repository.
+  - The go.mod file declares the module path github.com/petar-djukic/sdd-hello-world with no external dependencies.
+
+test_cases:
+  - name: Build succeeds
+    inputs: |
+      Run go build ./cmd/sdd-hello-world from the repository root.
+    expected: |
+      The command exits with code 0 and produces a compiled binary.
+
+  - name: Binary prints greeting
+    inputs: |
+      Run the compiled sdd-hello-world binary with no arguments.
+    expected: |
+      Stdout contains exactly "Hello, World!" followed by a newline. No other
+      output is produced.
+
+  - name: Binary exits with code 0
+    inputs: |
+      Run the compiled sdd-hello-world binary and capture the exit code.
+    expected: |
+      The exit code is 0.
+
+  - name: Version constant exists
+    inputs: |
+      Inspect cmd/sdd-hello-world/version.go for a Version constant.
+    expected: |
+      The file declares a package-level constant named Version of type string.
+
+  - name: No external dependencies
+    inputs: |
+      Inspect go.mod for require directives.
+    expected: |
+      No require directives exist. The module depends only on the Go standard
+      library.
