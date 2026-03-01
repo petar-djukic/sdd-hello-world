@@ -51,8 +51,7 @@ risks:
     likelihood: Low
     mitigation: Wait for proxy propagation before running e2e tests
 
-not: |
-  We do not handle command-line arguments. We do not read input. We do not
-  write to files. We do not use external packages. We do not write tests
-  beyond what cobbler-scaffold's e2e suite provides. This is not a template
-  for production SDD projects; it is a test fixture.
+not:
+  - We do not handle command-line arguments, read input, write to files, or use external packages.
+  - We do not write tests beyond what cobbler-scaffold's e2e suite provides.
+  - This is not a template for production SDD projects; it is a test fixture.
