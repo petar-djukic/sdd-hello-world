@@ -1,0 +1,38 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: specifications-sdd-hello-world
+title: SDD Hello World Specifications
+
+overview: |
+  SDD Hello World is a minimal test fixture for cobbler-scaffold. The project
+  has no PRDs, use cases, or test suites of its own — its purpose is to provide
+  a stable, minimal Go module that cobbler-scaffold's end-to-end tests can
+  scaffold against and exercise. For goals and boundaries see VISION.yaml. For
+  components and structure see ARCHITECTURE.yaml.
+
+roadmap_summary:
+  - version: "01.0"
+    name: Initial project and scaffold integration
+    use_cases_done: 0
+    use_cases_total: 0
+    status: done
+
+prd_index: []
+
+use_case_index: []
+
+test_suite_index: []
+
+prd_to_use_case_mapping: []
+
+coverage_gaps: |
+  This project has no formal PRDs or use cases by design. Its specification
+  is the VISION.yaml success criteria: the binary builds, prints "Hello, World!",
+  and the scaffold targets operate correctly. Formal specs are unnecessary for
+  a test fixture whose complexity is bounded.
+
+references:
+  - VISION.yaml
+  - ARCHITECTURE.yaml
+  - road-map.yaml

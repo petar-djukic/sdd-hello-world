@@ -20,24 +20,32 @@ task: |
 
   4. **Propose tasks** — For each task, write a description that follows the crumb-format YAML schema (see planning_constitution above and output_format below). Remember: the stitch agent sees ONLY the task description and the execution constitution. It does not see your analysis, the existing issues, or this conversation. The description must be self-contained.
 
-  5. **Write output** — Append the proposed tasks as a YAML list to `{output_path}` using the Write tool.
+  5. **Return output** — Return the proposed tasks as a YAML list in your text output, inside a fenced code block marked ```yaml. Do NOT use any tools. Your entire response is text only.
 
 constraints: |
-  - Do NOT explore the filesystem. Do NOT run ls, find, tree, or similar commands. Do NOT read files. All project information is in the project_context above.
-  - Do NOT interact with the issue tracker directly. Write the tasks to `{output_path}` using the Write tool.
-  - Do NOT read docs/ files with tools. All documentation is provided in the project_context above.
+  - Do NOT use any tools. Do NOT explore the filesystem, read files, or run commands. All project information is in the project_context above. Your response must be text only with zero tool calls.
+  - Do NOT interact with the issue tracker directly.
   - Do NOT duplicate existing issues. Review the issues in the project_context above before proposing.
+  - Issues with status "closed" represent COMPLETED work. Do not re-propose work that a closed issue already covers, even under a different title or framing. The completed_work field in project_context lists all finished tasks — treat every entry as work that must not be repeated.
+  - When source_code contains .go files for a package, that package already exists. Do not propose creating or reimplementing it. Trust the source code over prose descriptions in documentation (e.g., implementation_status sections in ARCHITECTURE.yaml may be stale).
   - Do NOT exceed {limit} tasks. If more work is needed, create additional tasks in a future session.
   - Do NOT create tasks larger than {lines_max} lines of production code. Target {lines_min}-{lines_max} lines per task, touching 5-7 files. Split aggressively: a task that creates a struct and implements its methods is two tasks.
+  - Each task must contain at most {max_requirements} requirements. Split any task that would exceed this limit.
   - Each task MUST be independently executable by an agent that has no context beyond the task description and the execution constitution.
   - Do NOT assume the stitch agent has access to your analysis, the existing issues list, or any context from this conversation.
   - Do NOT propose tasks that require human judgment or manual testing. Each task must have checkable acceptance criteria.
-  - The ONLY tool call you should make is the Write tool to save the output YAML file.
+  - Anchor every task to specific PRD requirement IDs (e.g., prd001 R1.1). Include the requirement ID in the task title. Given the same PRD and release, the same tasks should be proposed regardless of how many times this prompt is run.
+  - Order tasks canonically: documentation before code, types before implementations, libraries before consumers, implementation before tests. Break ties by primary file path alphabetically.
+  - Derive file names from PRD/architecture names, not invented names. If the architecture calls a component "crumb", the file is crumb.go.
+  - Do NOT invent design decisions not derived from the PRD or architecture. Derive struct shapes, timeout strategies, file names, and naming conventions from the PRD rather than making arbitrary choices. If the PRD does not specify a detail, omit it from design decisions rather than inventing one.
+  - When a PRD specifies a concrete design choice (e.g., "use a FileExpectation struct", "the main file is difftest.go", "timeout is configurable via context"), copy that choice verbatim into the task's design_decisions. Do not rephrase, generalize, or substitute alternatives. The PRD is the single source of truth for implementation details.
+  - Do NOT vary requirement count between equivalent runs. Each PRD requirement maps to one task requirement. Given the same input, produce the same requirement set. If two runs of this prompt against the same project state would produce different requirements, the decomposition is under-constrained -- tighten it.
+  - Do NOT make any tool calls. Return the YAML list directly in your text output.
 
 output_format: |
-  Write a YAML list of crumb objects to `{output_path}`. Each crumb has a sequential `index` (starting at 0) and a `dependency` field. Set `dependency` to the index of the crumb that must be completed first, or `-1` if there are no dependencies.
+  Return a YAML list of crumb objects inside a fenced code block (```yaml). Each crumb has a sequential `index` (starting at 0) and a `dependency` field. Set `dependency` to the index of the crumb that must be completed first, or `-1` if there are no dependencies.
 
-  The `description` field must follow the crumb-format YAML schema from the planning_constitution. Write it as a YAML literal block scalar.
+  The `description` field must be a valid YAML document conforming to the issue_format_constitution injected above. Write it as a YAML literal block scalar. Use ASCII dashes, not Unicode em dashes. Requirements, design decisions, and acceptance criteria are all mappings with `id:` and `text:` fields (R1/R2/..., D1/D2/..., AC1/AC2/...).
 
   Example:
     - index: 0
@@ -59,16 +67,22 @@ output_format: |
             note: ExampleType implementation
 
         requirements:
-          - "R1: Implement ExampleType per prd001-feature R2"
-          - "R2: Add Get and Set operations"
+          - id: R1
+            text: Implement ExampleType per prd001-feature R2
+          - id: R2
+            text: Add Get and Set operations
 
         design_decisions:
-          - Use table accessor pattern from prd001-cupboard-core
-          - "Keep implementation in internal/, not pkg/"
+          - id: D1
+            text: Use table accessor pattern from prd001-cupboard-core
+          - id: D2
+            text: "Keep implementation in internal/, not pkg/"
 
         acceptance_criteria:
-          - All operations implemented and tested
-          - Tests pass for each operation
+          - id: AC1
+            text: All operations implemented and tested
+          - id: AC2
+            text: Tests pass for each operation
 
     - index: 1
       title: Task that depends on task 0
@@ -85,11 +99,15 @@ output_format: |
             note: integration tests
 
         requirements:
-          - "R1: Test all ExampleType operations end to end"
+          - id: R1
+            text: Test all ExampleType operations end to end
 
         acceptance_criteria:
-          - All tests pass
+          - id: AC1
+            text: All tests pass
 
-  The description must be self-contained. All five fields (deliverable_type, required_reading, files, requirements, acceptance_criteria) are required. Add design_decisions when the stitch agent must follow specific patterns or architecture constraints.
+  The description must be self-contained. All five fields (deliverable_type, required_reading, files, requirements, acceptance_criteria) are required. Each requirement, design_decision, and acceptance_criteria entry is a mapping with `id` and `text` fields. Add design_decisions when the stitch agent must follow specific patterns or architecture constraints.
 
-  The tasks will be automatically imported into the issue tracker.
+  When a golden_example field is present in this prompt, it is the authoritative reference for style, granularity, and naming conventions. Match its requirement count range, acceptance criteria density, design decision style, and file naming pattern. Deviate from the golden example only when the PRD explicitly requires a different structure.
+
+  The orchestrator will parse the YAML from your text output and import the tasks into the issue tracker.

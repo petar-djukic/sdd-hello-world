@@ -1,0 +1,19 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: sdd-hello-world-roadmap
+title: SDD Hello World Roadmap
+
+releases:
+  - version: "01.0"
+    name: Initial project and scaffold integration
+    status: done
+    description: |
+      Minimal Go binary, SDD project structure, and cobbler-scaffold integration.
+      Phase 1 delivered the binary and documentation. Phase 2 scaffolded the
+      orchestrator mage targets, published the module to the Go module proxy,
+      and validated the full cobbler-scaffold E2E pipeline.
+    use_cases: []
+
+prioritization:
+  - This project has no active development. The roadmap records completed phases only.
