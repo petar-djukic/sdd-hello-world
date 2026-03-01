@@ -1,0 +1,50 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: prd001-hello-world-binary
+title: Hello World Binary
+
+problem: |
+  The cobbler-scaffold orchestrator needs a minimal Go binary to exercise its
+  measure and stitch pipeline against. The binary must be simple enough that a
+  single generation cycle can produce it from specifications alone, yet
+  complete enough to validate that the pipeline creates compilable, runnable
+  Go code. Without a PRD that specifies the binary's requirements, the measure
+  agent has no anchored requirements to propose and proposes zero tasks.
+
+goals:
+  - id: G1
+    text: |
+      Provide a compilable Go binary that prints a greeting and exits
+      successfully, serving as a reproducible target for cobbler-scaffold
+      code generation.
+  - id: G2
+    text: |
+      Specify the binary precisely enough that the measure agent can propose
+      implementation tasks anchored to numbered requirements.
+
+requirements:
+  R1:
+    title: Binary structure
+    items:
+      - R1.1: The binary must have its entry point at cmd/sdd-hello-world/main.go with a main function in package main.
+      - R1.2: The binary must have a version file at cmd/sdd-hello-world/version.go that declares a Version constant of type string in package main.
+      - R1.3: The binary must use only the Go standard library. The go.mod file must not declare any external dependencies.
+  R2:
+    title: Runtime behavior
+    items:
+      - R2.1: The binary must print exactly "Hello, World!" followed by a newline character to standard output.
+      - R2.2: The binary must exit with code 0 after printing.
+      - R2.3: The binary must accept no command-line arguments and produce no other output.
+
+non_goals:
+  - Reading input from stdin or files
+  - Handling command-line flags or arguments
+  - Using external packages or dependencies
+  - Writing tests within this project (cobbler-scaffold's E2E suite provides coverage)
+
+acceptance_criteria:
+  - go build ./cmd/sdd-hello-world succeeds with exit code 0.
+  - Running the compiled binary produces exactly "Hello, World!\n" on stdout and exits with code 0.
+  - cmd/sdd-hello-world/main.go exists with a main function.
+  - cmd/sdd-hello-world/version.go exists with a Version constant.

@@ -84,17 +84,19 @@ design_decisions:
       - "Adding helper packages: unnecessary complexity for a test fixture"
 
   - id: 2
-    title: SDD project structure without specs
+    title: Specification-driven code generation
     decision: |
-      We include VISION.yaml, ARCHITECTURE.yaml, and road-map.yaml but no PRDs,
-      use cases, or test suites. The cobbler-scaffold measure phase needs a valid
-      vision document to read; the absence of PRDs is intentional — this project
-      exists only to validate scaffold and measure plumbing, not to drive code generation.
+      We include a PRD (prd001-hello-world-binary), a use case, and a test suite
+      that specify the binary's requirements. The cobbler-scaffold measure phase
+      reads these specifications and proposes implementation tasks when the Go
+      source files are absent. This makes the project a reliable, reproducible
+      target for the generation pipeline.
     benefits:
-      - Cobbler-scaffold UC003/UC004 tests can exercise the full measure cycle
-        against a valid project context without being coupled to real specification work
+      - The measure agent has anchored requirements to propose tasks against
+      - Each generation cycle can produce the binary from specifications alone
+      - The test suite validates that generated code meets the PRD requirements
     alternatives_rejected:
-      - "Adding a PRD: would couple test stability to ongoing specification changes"
+      - "No specs: measure agent finds nothing to propose when source is absent"
 
 technology_choices:
   - component: Language
@@ -124,18 +126,25 @@ project_structure:
     role: Go module definition (no external dependencies)
 
 implementation_status:
-  current_focus: Stable test fixture; no active development
+  current_focus: Release 02.0 — implement binary from specifications
   progress:
-    - done: Go binary (cmd/sdd-hello-world/main.go)
     - done: Scaffolded mage targets (magefiles/orchestrator.go)
     - done: Configuration (configuration.yaml)
     - done: Documentation (VISION.yaml, ARCHITECTURE.yaml, road-map.yaml, constitutions)
     - done: Tagged and published as Go module
+    - done: PRD, use case, and test suite for hello world binary
+    - pending: Go binary (cmd/sdd-hello-world/main.go, cmd/sdd-hello-world/version.go)
 
 related_documents:
   - doc: docs/VISION.yaml
     purpose: Project purpose, scope, and success criteria
   - doc: docs/road-map.yaml
     purpose: Release schedule and phase status
+  - doc: docs/specs/product-requirements/prd001-hello-world-binary.yaml
+    purpose: Binary requirements (file structure, runtime behavior)
+  - doc: docs/specs/use-cases/rel02.0-uc001-build-hello-world.yaml
+    purpose: Build and run use case for release 02.0
+  - doc: docs/specs/test-suites/test-rel02.0.yaml
+    purpose: Test suite validating the binary use case
   - doc: configuration.yaml
     purpose: Orchestrator configuration

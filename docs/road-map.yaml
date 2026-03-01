@@ -15,5 +15,17 @@ releases:
       and validated the full cobbler-scaffold E2E pipeline.
     use_cases: []
 
+  - version: "02.0"
+    name: Hello world binary from specifications
+    status: pending
+    description: |
+      We implement the hello world binary from its PRD specification. The
+      generation pipeline reads prd001-hello-world-binary and produces the Go
+      source files. This release validates that cobbler-scaffold can generate
+      code from specs in a clean repository.
+    use_cases:
+      - id: rel02.0-uc001-build-hello-world
+        status: pending
+
 prioritization:
-  - This project has no active development. The roadmap records completed phases only.
+  - Release 02.0 implements the binary from specifications so the generation pipeline has reproducible work to propose and execute.
