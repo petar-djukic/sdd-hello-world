@@ -4,4 +4,4 @@
 package main
 
 // Version is set during the generation process.
-const Version = "generation-2026-03-01-07-47-36"
+const Version = "v1.20260301.1"
