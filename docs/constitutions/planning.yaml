@@ -206,7 +206,7 @@ example_documentation_issue: |
 
   required_reading:
     - docs/ARCHITECTURE.yaml (components section)
-    - docs/specs/product-requirements/prd001-cupboard-core.yaml
+    - docs/specs/product-requirements/prd001-hello-world-binary.yaml
 
   files:
     - path: docs/specs/product-requirements/prd-feature-name.yaml
@@ -232,7 +232,7 @@ example_code_issue: |
 
   required_reading:
     - docs/specs/product-requirements/prd003-crumbs-interface.yaml
-    - pkg/types/cupboard.go
+    - cmd/sdd-hello-world/main.go
 
   files:
     - path: pkg/types/crumb.go
@@ -255,7 +255,7 @@ example_code_issue: |
 
   design_decisions:
     - id: D1
-      text: Use table accessor pattern from prd001-cupboard-core
+      text: Follow binary structure from prd001-hello-world-binary
     - id: D2
       text: Filter as map[string]any per PRD
 

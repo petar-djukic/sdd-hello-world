@@ -169,7 +169,7 @@ struct_embedding: |
   CLI flags. Do not duplicate fields across sibling structs.
 
 naming_conventions:
-  - "Exported types and functions: PascalCase (e.g., CupboardConfig)"
+  - "Exported types and functions: PascalCase (e.g., ProjectConfig)"
   - "Unexported types and functions: camelCase (e.g., cobblerConfig)"
   - "CLI flags: kebab-case (e.g., --silence-agent)"
   - "Constants for binaries: bin prefix + PascalCase (e.g., binGit, binClaude)"

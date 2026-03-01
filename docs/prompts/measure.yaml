@@ -74,7 +74,7 @@ output_format: |
 
         design_decisions:
           - id: D1
-            text: Use table accessor pattern from prd001-cupboard-core
+            text: Follow binary structure from prd001-hello-world-binary
           - id: D2
             text: "Keep implementation in internal/, not pkg/"
 
