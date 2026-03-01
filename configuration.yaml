@@ -29,7 +29,7 @@ project:
 generation:
     prefix: generation-
     cycles: 0
-    branch: "generation-2026-03-01-09-59-53"
+    branch: ""
     cleanup_dirs: []
 cobbler:
     dir: .cobbler/
