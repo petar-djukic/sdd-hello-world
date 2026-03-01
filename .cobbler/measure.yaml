@@ -52,3 +52,174 @@
       - id: AC6
         text: "go.mod contains no require directives -- no external dependencies were added"
   dependency: -1
+- index: 0
+  title: Implement hello world binary entry point (prd001 R1.1, R2.1, R2.2, R2.3)
+  description: |-
+    deliverable_type: code
+
+    required_reading:
+      - docs/specs/product-requirements/prd001-hello-world-binary.yaml (binary requirements)
+      - docs/ARCHITECTURE.yaml (binary component description and project structure)
+      - cmd/sdd-hello-world/version.go (existing version constant in same package)
+      - go.mod (verify no external dependencies exist)
+
+    files:
+      - path: cmd/sdd-hello-world/main.go
+        action: create
+        note: Binary entry point with main function that prints greeting and exits 0
+
+    requirements:
+      - id: R1
+        text: |
+          Create cmd/sdd-hello-world/main.go with a main function in package main
+          that prints exactly "Hello, World!" followed by a newline to stdout and
+          exits with code 0. Uses only the Go standard library fmt package.
+          Implements prd001-hello-world-binary R1.1, R2.1, R2.2, R2.3.
+      - id: R2
+        text: |
+          The file must start with the SPDX copyright header per go-style
+          constitution: "// Copyright (c) 2026 Petar Djukic. All rights reserved."
+          and "// SPDX-License-Identifier: MIT" on lines 1-2, followed by a blank
+          line, then the package clause.
+      - id: R3
+        text: |
+          The binary must accept no command-line arguments and produce no output
+          other than "Hello, World!\n" on stdout. Do not import os, flag, or any
+          package beyond fmt. Implements prd001-hello-world-binary R2.3.
+      - id: R4
+        text: |
+          Do not modify go.mod. The module must remain free of external dependencies.
+          Implements prd001-hello-world-binary R1.3.
+      - id: R5
+        text: |
+          Do not modify cmd/sdd-hello-world/version.go. It already exists with the
+          correct Version constant. Implements prd001-hello-world-binary R1.2.
+
+    design_decisions:
+      - id: D1
+        text: |
+          Use fmt.Println("Hello, World!") which prints the string followed by a
+          newline and returns. The main function returns normally, producing exit
+          code 0 without calling os.Exit.
+      - id: D2
+        text: |
+          The file imports only "fmt" from the standard library. No other imports
+          are needed or allowed.
+      - id: D3
+        text: |
+          The version.go file in the same package already declares the Version
+          constant. Do not redeclare it or reference it from main.go.
+
+    acceptance_criteria:
+      - id: AC1
+        text: cmd/sdd-hello-world/main.go exists with a main function in package main.
+      - id: AC2
+        text: "go build ./cmd/sdd-hello-world succeeds with exit code 0."
+      - id: AC3
+        text: |
+          Running the compiled binary produces exactly "Hello, World!" followed by
+          a newline on stdout and no other output.
+      - id: AC4
+        text: The compiled binary exits with code 0.
+      - id: AC5
+        text: |
+          The file starts with the SPDX copyright header on lines 1-2, a blank line,
+          then the package clause.
+      - id: AC6
+        text: go.mod contains no require directives and no external dependencies.
+      - id: AC7
+        text: cmd/sdd-hello-world/version.go is unchanged.
+  dependency: -1
+- index: 0
+  title: Implement hello world binary entry point (prd001 R1.1, R2.1, R2.2, R2.3)
+  description: |-
+    deliverable_type: code
+
+    required_reading:
+      - docs/specs/product-requirements/prd001-hello-world-binary.yaml (all requirements)
+      - docs/ARCHITECTURE.yaml (Binary component, project_structure)
+      - docs/constitutions/go-style.yaml (copyright header, naming conventions)
+      - docs/constitutions/execution.yaml (specification-first, no scope creep, no git commands)
+      - cmd/sdd-hello-world/version.go (existing Version constant -- do not recreate or modify)
+      - go.mod (module path -- do not add dependencies)
+
+    files:
+      - path: cmd/sdd-hello-world/main.go
+        action: create
+        note: "Binary entry point: package main, main() prints Hello, World! and exits 0"
+
+    requirements:
+      - id: R1
+        text: >
+          Create cmd/sdd-hello-world/main.go with a main function in package main.
+          The file must start with the SPDX copyright header
+          (// Copyright (c) 2026 Petar Djukic. All rights reserved. //
+          SPDX-License-Identifier: MIT) followed by a blank line and the package
+          clause. Implements prd001-hello-world-binary R1.1.
+      - id: R2
+        text: >
+          The main function must print exactly "Hello, World!" followed by a newline
+          character to standard output using fmt.Println. Implements
+          prd001-hello-world-binary R2.1.
+      - id: R3
+        text: >
+          The binary must exit with code 0 after printing. The default Go behavior
+          (returning from main) satisfies this -- do not call os.Exit explicitly.
+          Implements prd001-hello-world-binary R2.2.
+      - id: R4
+        text: >
+          The binary must accept no command-line arguments and produce no other output.
+          Do not import flag, os.Args, or any argument-handling code. Do not print
+          anything other than "Hello, World!\n". Implements prd001-hello-world-binary R2.3.
+      - id: R5
+        text: >
+          Use only the Go standard library. Do not add any require directives to
+          go.mod. The only import needed is "fmt". Implements
+          prd001-hello-world-binary R1.3.
+      - id: R6
+        text: >
+          Do not modify cmd/sdd-hello-world/version.go. It already exists with the
+          Version constant. The new main.go must compile alongside it in the same
+          package (package main). Implements prd001-hello-world-binary R1.2 (already
+          satisfied -- just preserve compatibility).
+
+    design_decisions:
+      - id: D1
+        text: >
+          Use fmt.Println("Hello, World!") as the single statement in main(). This
+          prints the exact string followed by a newline and returns, causing the
+          process to exit with code 0. No other code is needed.
+      - id: D2
+        text: >
+          Do not reference the Version constant from main(). The version.go file
+          exists for the generation pipeline; main.go has no use for it. Keep the
+          two files independent.
+      - id: D3
+        text: >
+          The file should be minimal -- copyright header, package clause, import,
+          and main function. No doc comments on main() beyond what is self-evident.
+          This is a test fixture, not a production binary.
+
+    acceptance_criteria:
+      - id: AC1
+        text: cmd/sdd-hello-world/main.go exists with package main and a main function.
+      - id: AC2
+        text: >
+          "go build ./cmd/sdd-hello-world" succeeds with exit code 0 from the
+          repository root.
+      - id: AC3
+        text: >
+          Running the compiled binary produces exactly "Hello, World!" followed by a
+          newline on stdout and no other output.
+      - id: AC4
+        text: The binary exits with code 0.
+      - id: AC5
+        text: >
+          The file starts with the SPDX copyright header on lines 1-2, a blank line,
+          then "package main".
+      - id: AC6
+        text: >
+          go.mod contains no require directives. The only import in main.go is "fmt".
+      - id: AC7
+        text: cmd/sdd-hello-world/version.go is unchanged.
+  dependency: -1
