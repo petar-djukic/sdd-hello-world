@@ -1,85 +1,54 @@
 - index: 0
-  title: Create Hello World binary entry point (VISION runtime_correctness, build_correctness)
+  title: Implement hello world binary entry point (prd001 R1.1, R2.1, R2.2, R2.3)
   description: |-
     deliverable_type: code
 
     required_reading:
-      - docs/VISION.yaml (success_criteria section -- runtime_correctness and build_correctness)
-      - docs/ARCHITECTURE.yaml (components section -- Binary component; project_structure section)
-      - cmd/sdd-hello-world/version.go (current seed file that must be modified)
+      - docs/specs/product-requirements/prd001-hello-world-binary.yaml (all requirements for the binary)
+      - docs/ARCHITECTURE.yaml (Binary component description and project structure)
+      - cmd/sdd-hello-world/version.go (existing file in the same package -- do not modify)
+      - go.mod (module path -- do not modify or add dependencies)
+      - docs/constitutions/go-style.yaml (copyright header and coding standards)
+      - docs/constitutions/execution.yaml (execution rules -- do NOT run git commands)
 
     files:
       - path: cmd/sdd-hello-world/main.go
         action: create
-        note: Binary entry point -- prints "Hello, World!" to stdout and exits 0
-      - path: cmd/sdd-hello-world/version.go
-        action: modify
-        note: Remove main() function and fmt import -- keep only the Version constant
+        note: "Binary entry point: package main with main function that prints Hello, World! and exits 0"
 
     requirements:
       - id: R1
-        text: |
-          Create cmd/sdd-hello-world/main.go with a main() function that prints
-          exactly "Hello, World!" followed by a newline to stdout and exits with
-          code 0. Use fmt.Println. This satisfies VISION success_criteria
-          runtime_correctness.
+        text: "Create cmd/sdd-hello-world/main.go with a main function in package main (prd001 R1.1)"
       - id: R2
-        text: |
-          Modify cmd/sdd-hello-world/version.go to contain only the package
-          declaration, copyright header, and the Version constant. Remove the
-          main() function and the "fmt" import. The Version constant value must
-          remain unchanged.
+        text: "Print exactly \"Hello, World!\" followed by a newline character to standard output (prd001 R2.1)"
       - id: R3
-        text: |
-          Both Go files must begin with the SPDX copyright header per
-          go-style constitution: "// Copyright (c) 2026 Petar Djukic. All rights
-          reserved." followed by "// SPDX-License-Identifier: MIT", then a blank
-          line, then the package clause.
+        text: "Exit with code 0 after printing (prd001 R2.2)"
       - id: R4
-        text: |
-          The binary must use only the Go standard library. No external packages
-          may be added to go.mod. This satisfies ARCHITECTURE design decision 1
-          (zero-dependency binary).
+        text: "Accept no command-line arguments and produce no other output (prd001 R2.3)"
       - id: R5
-        text: |
-          The binary must compile successfully with "go build ./cmd/sdd-hello-world".
-          This satisfies VISION success_criteria build_correctness.
+        text: "Use only the Go standard library -- do not add any dependencies to go.mod (prd001 R1.3)"
+      - id: R6
+        text: "Include the SPDX copyright header on lines 1-2 per go-style constitution"
 
     design_decisions:
       - id: D1
-        text: |
-          Use only fmt.Println("Hello, World!") in main(). The VISION
-          runtime_correctness criterion requires the binary to print exactly
-          "Hello, World!" followed by a newline. fmt.Println provides the
-          trailing newline.
+        text: "Use fmt.Println(\"Hello, World!\") for output -- prints the string with a trailing newline, which satisfies R2.1 and R2.2 (main returns normally, Go exits 0)"
       - id: D2
-        text: |
-          The main() function belongs in main.go, not version.go. Per
-          ARCHITECTURE project_structure, main.go is the "Binary entry point"
-          and version.go is the "Version constant (seed file, populated at
-          generation time)."
+        text: "Do not call os.Exit(0) explicitly -- Go exits with code 0 when main returns normally. An explicit os.Exit would be redundant."
       - id: D3
-        text: |
-          Do not reference or print the Version constant from main(). The
-          binary's sole behavior is printing "Hello, World!" per VISION. The
-          Version constant exists for the orchestrator's use, not for runtime
-          output.
+        text: "Do not reference the Version constant from version.go in main.go -- the PRD requires no output other than the greeting (prd001 R2.3)"
 
     acceptance_criteria:
       - id: AC1
-        text: "go build ./cmd/sdd-hello-world succeeds with exit code 0"
+        text: "cmd/sdd-hello-world/main.go exists with package main declaration and a main function"
       - id: AC2
-        text: |
-          Running the compiled binary prints exactly "Hello, World!" followed
-          by a newline to stdout and exits with code 0
+        text: "go build ./cmd/sdd-hello-world succeeds with exit code 0"
       - id: AC3
-        text: |
-          cmd/sdd-hello-world/version.go contains only the package declaration,
-          copyright header, and "const Version" -- no func main(), no import
+        text: "Running the compiled binary prints exactly \"Hello, World!\" followed by a newline to stdout and produces no other output"
       - id: AC4
-        text: |
-          cmd/sdd-hello-world/main.go exists with func main() that calls
-          fmt.Println("Hello, World!")
+        text: "Running the compiled binary exits with code 0"
       - id: AC5
-        text: Both Go files begin with the SPDX copyright header on lines 1-2
+        text: "The file begins with the SPDX copyright header: // Copyright (c) 2026 Petar Djukic. All rights reserved. and // SPDX-License-Identifier: MIT"
+      - id: AC6
+        text: "go.mod contains no require directives -- no external dependencies were added"
   dependency: -1

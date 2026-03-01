@@ -1,4 +1,14 @@
 consistency_errors: 0
 code_status:
-    releases: []
+    releases:
+        - version: "02.0"
+          name: Hello world binary from specifications
+          specstatus: pending
+          codereadiness: none
+          usecases:
+            - id: rel02.0-uc001-build-hello-world
+              specstatus: pending
+              codestatus: not started
+              testdir: ""
+              testfiles: 0
     gaps: []
