@@ -32,6 +32,7 @@ generation:
     branch: ""
     cleanup_dirs: []
 cobbler:
+    mode: cli
     dir: .cobbler/
     beads_dir: ""
     max_stitch_issues: 0
