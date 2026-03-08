@@ -46,11 +46,14 @@ touchpoints:
 
 success_criteria:
   - id: S1
-    text: go build ./cmd/sdd-hello-world exits with code 0.
+    criterion: go build ./cmd/sdd-hello-world exits with code 0.
+    traces: [AC1]
   - id: S2
-    text: The binary prints "Hello, World!\n" to stdout.
+    criterion: The binary prints "Hello, World!\n" to stdout.
+    traces: [AC2]
   - id: S3
-    text: The binary exits with code 0.
+    criterion: The binary exits with code 0.
+    traces: [AC2]
 
 out_of_scope:
   - Testing with command-line arguments or flags

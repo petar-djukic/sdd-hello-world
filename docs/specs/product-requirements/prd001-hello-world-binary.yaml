@@ -44,7 +44,15 @@ non_goals:
   - Writing tests within this project (cobbler-scaffold's E2E suite provides coverage)
 
 acceptance_criteria:
-  - go build ./cmd/sdd-hello-world succeeds with exit code 0.
-  - Running the compiled binary produces exactly "Hello, World!\n" on stdout and exits with code 0.
-  - cmd/sdd-hello-world/main.go exists with a main function.
-  - cmd/sdd-hello-world/version.go exists with a Version constant.
+  - id: AC1
+    criterion: go build ./cmd/sdd-hello-world succeeds with exit code 0.
+    traces: [R1.1, R1.2, R1.3]
+  - id: AC2
+    criterion: Running the compiled binary produces exactly "Hello, World!\n" on stdout and exits with code 0.
+    traces: [R2.1, R2.2, R2.3]
+  - id: AC3
+    criterion: cmd/sdd-hello-world/main.go exists with a main function.
+    traces: [R1.1]
+  - id: AC4
+    criterion: cmd/sdd-hello-world/version.go exists with a Version constant.
+    traces: [R1.2]
