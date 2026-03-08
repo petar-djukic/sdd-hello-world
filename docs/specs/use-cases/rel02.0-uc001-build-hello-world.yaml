@@ -20,13 +20,13 @@ flow:
   - id: F1
     text: Run go build ./cmd/sdd-hello-world to compile the binary.
   - id: F2
-    text: Verify the build succeeds with exit code 0.
+    text: Verify the build succeeds with exit code 0 (gates F3; a failed build produces no binary to run).
   - id: F3
-    text: Run the compiled binary.
+    text: Run the compiled binary (requires artifact from F1 and success confirmation from F2).
   - id: F4
-    text: Capture stdout and the exit code.
+    text: Capture stdout and the exit code (must happen during F3 execution to avoid lost output).
   - id: F5
-    text: Verify stdout contains exactly "Hello, World!\n" and exit code is 0.
+    text: Verify stdout contains exactly "Hello, World!\n" and exit code is 0 (requires captured values from F4).
 
 touchpoints:
   - id: T1
@@ -46,14 +46,12 @@ touchpoints:
 
 success_criteria:
   - id: S1
-    criterion: go build ./cmd/sdd-hello-world exits with code 0.
-    traces: [AC1]
-  - id: S2
-    criterion: The binary prints "Hello, World!\n" to stdout.
-    traces: [AC2]
-  - id: S3
-    criterion: The binary exits with code 0.
-    traces: [AC2]
+    criterion: |
+      The end-to-end sequence (build, run, capture, verify) completes: go build
+      exits 0, the resulting binary prints exactly "Hello, World!\n" to stdout,
+      and the binary exits 0. This exercises AC1 and AC2 together as an
+      integration check that the generated source compiles and behaves correctly.
+    traces: [AC1, AC2]
 
 out_of_scope:
   - Testing with command-line arguments or flags
