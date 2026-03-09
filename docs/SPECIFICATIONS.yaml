@@ -6,10 +6,11 @@ title: SDD Hello World Specifications
 
 overview: |
   SDD Hello World is a minimal test fixture for cobbler-scaffold. The project
-  specifies a Go binary that prints "Hello, World!" and exits 0. The
-  cobbler-scaffold generation pipeline reads the PRD and produces the Go source
-  files. For goals and boundaries see VISION.yaml. For components and structure
-  see ARCHITECTURE.yaml.
+  specifies a Go binary that prints "Hello, World!" and exits 0, with CLI
+  enhancements (version, name, help flags) in a second release. The
+  cobbler-scaffold generation pipeline reads the PRDs and produces the Go
+  source files. For goals and boundaries see VISION.yaml. For components and
+  structure see ARCHITECTURE.yaml.
 
 roadmap_summary:
   - version: "01.0"
@@ -22,6 +23,11 @@ roadmap_summary:
     use_cases_done: 0
     use_cases_total: 1
     status: pending
+  - version: "03.0"
+    name: CLI enhancements
+    use_cases_done: 0
+    use_cases_total: 3
+    status: pending
 
 prd_index:
   - id: prd001-hello-world-binary
@@ -31,6 +37,14 @@ prd_index:
       file structure (main.go, version.go), runtime behavior, and zero-dependency
       constraint.
     path: docs/specs/product-requirements/prd001-hello-world-binary.yaml
+  - id: prd002-cli-enhancements
+    title: CLI Enhancements
+    summary: |
+      Adds command-line flag support: --version prints the version constant,
+      --name personalizes the greeting, --help shows usage, and unknown flags
+      produce an error on stderr with exit code 1. Uses Go standard library
+      flag package only.
+    path: docs/specs/product-requirements/prd002-cli-enhancements.yaml
 
 use_case_index:
   - id: rel02.0-uc001-build-hello-world
@@ -39,6 +53,24 @@ use_case_index:
     status: pending
     test_suite: test-rel02.0
     path: docs/specs/use-cases/rel02.0-uc001-build-hello-world.yaml
+  - id: rel03.0-uc002-version-output
+    title: Version Output
+    release: "03.0"
+    status: pending
+    test_suite: test-rel03.0
+    path: docs/specs/use-cases/rel03.0-uc002-version-output.yaml
+  - id: rel03.0-uc003-personalized-greeting
+    title: Personalized Greeting
+    release: "03.0"
+    status: pending
+    test_suite: test-rel03.0
+    path: docs/specs/use-cases/rel03.0-uc003-personalized-greeting.yaml
+  - id: rel03.0-uc004-error-unknown-flag
+    title: Error on Unknown Flag
+    release: "03.0"
+    status: pending
+    test_suite: test-rel03.0
+    path: docs/specs/use-cases/rel03.0-uc004-error-unknown-flag.yaml
 
 test_suite_index:
   - id: test-rel02.0
@@ -47,6 +79,14 @@ test_suite_index:
       - rel02.0-uc001-build-hello-world
     test_case_count: 5
     path: docs/specs/test-suites/test-rel02.0.yaml
+  - id: test-rel03.0
+    title: Test Suite for Release 03.0 — CLI Enhancements
+    traces:
+      - rel03.0-uc002-version-output
+      - rel03.0-uc003-personalized-greeting
+      - rel03.0-uc004-error-unknown-flag
+    test_case_count: 7
+    path: docs/specs/test-suites/test-rel03.0.yaml
 
 prd_to_use_case_mapping:
   - use_case: rel02.0-uc001-build-hello-world
@@ -55,10 +95,30 @@ prd_to_use_case_mapping:
       The use case exercises all PRD requirements by building and running the
       binary, verifying output, exit code, and file structure.
     coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3
+  - use_case: rel03.0-uc002-version-output
+    prd: prd002-cli-enhancements
+    why_required: |
+      Validates the --version flag prints the Version constant and exits 0
+      without producing greeting output.
+    coverage: R1.1, R1.2, R1.3
+  - use_case: rel03.0-uc003-personalized-greeting
+    prd: prd002-cli-enhancements
+    why_required: |
+      Validates the --name flag personalizes the greeting and that the default
+      greeting is preserved when no flag is provided.
+    coverage: R2.1, R2.2, R2.3
+  - use_case: rel03.0-uc004-error-unknown-flag
+    prd: prd002-cli-enhancements
+    why_required: |
+      Validates that unknown flags produce an error on stderr and exit code 1,
+      exercising the flag package error handling path.
+    coverage: R4.1, R4.2, R4.3
 
 coverage_gaps: |
-  No coverage gaps. All prd001-hello-world-binary requirements are covered by
-  the rel02.0-uc001-build-hello-world use case and its test suite.
+  prd002-cli-enhancements R3 (help flag) is not covered by a dedicated use
+  case. The test suite includes a help flag test case, but no UC exercises
+  it as a primary flow. This is acceptable because --help behavior is
+  provided by the Go flag package with minimal custom code.
 
 references:
   - VISION.yaml
