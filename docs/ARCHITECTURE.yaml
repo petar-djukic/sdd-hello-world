@@ -158,12 +158,10 @@ related_documents:
     purpose: Test suite validating the binary use case
   - doc: docs/specs/product-requirements/prd002-cli-enhancements.yaml
     purpose: CLI flag requirements (version, name, help, error handling)
-  - doc: docs/specs/use-cases/rel03.0-uc002-version-output.yaml
-    purpose: Version output use case for release 03.0
-  - doc: docs/specs/use-cases/rel03.0-uc003-personalized-greeting.yaml
-    purpose: Personalized greeting use case for release 03.0
-  - doc: docs/specs/use-cases/rel03.0-uc004-error-unknown-flag.yaml
-    purpose: Error handling use case for release 03.0
+  - doc: docs/specs/use-cases/rel03.0-uc002-greeting-and-version.yaml
+    purpose: Greeting and version flag use case for release 03.0 (R1, R2)
+  - doc: docs/specs/use-cases/rel03.0-uc003-help-and-errors.yaml
+    purpose: Help and error handling use case for release 03.0 (R3, R4)
   - doc: docs/specs/test-suites/test-rel03.0.yaml
     purpose: Test suite validating CLI enhancement use cases
   - doc: configuration.yaml

@@ -1,0 +1,58 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: rel03.0-uc003-help-and-errors
+title: Help and Error Handling
+
+summary: |
+  We run the sdd-hello-world binary with --help and with an unknown flag to
+  verify that the stderr-producing paths work correctly. The --help flag
+  prints usage information and exits 0. An unknown flag prints an error and
+  exits 1. This use case exercises the diagnostic and error handling paths
+  of the flag package integration.
+
+actor: Developer or CI pipeline
+
+trigger: |
+  The compiled sdd-hello-world binary exists after a successful build, and
+  the user or test harness invokes it with --help or an unknown flag.
+
+flow:
+  - id: F1
+    text: Build the binary with go build ./cmd/sdd-hello-world.
+  - id: F2
+    text: Run the binary with --help and capture stderr and exit code.
+  - id: F3
+    text: Verify stderr contains usage information listing all supported flags and exit code is 0.
+  - id: F4
+    text: Run the binary with --unknown and capture stderr and exit code.
+  - id: F5
+    text: Verify stderr contains an error message about the unrecognized flag and exit code is 1.
+  - id: F6
+    text: Verify that no greeting text appears on stdout for either invocation.
+
+touchpoints:
+  - id: T1
+    text: |
+      Binary component (cmd/sdd-hello-world/main.go) — exercises the --help
+      usage output and the error handling path for unknown flags. Implements
+      prd002-cli-enhancements R3.1, R3.2, R4.1, R4.2, R4.3.
+
+success_criteria:
+  - id: S1
+    criterion: |
+      The binary with --help prints usage information listing all supported
+      flags (--version, --name, --help) to stderr and exits with code 0.
+    traces: [AC4]
+  - id: S2
+    criterion: |
+      The binary with an unknown flag (e.g. --unknown) prints an error
+      message to stderr and exits with code 1. No greeting text appears
+      on stdout.
+    traces: [AC5]
+
+out_of_scope:
+  - Specific error message format (flag package default is acceptable)
+  - Multiple unknown flags in a single invocation
+
+test_suite: test-rel03.0

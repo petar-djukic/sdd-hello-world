@@ -36,11 +36,9 @@ releases:
       provides multiple use cases so the cobbler-scaffold generation pipeline
       exercises multi-cycle generation with per-UC validation and auto-advance.
     use_cases:
-      - id: rel03.0-uc002-version-output
+      - id: rel03.0-uc002-greeting-and-version
         status: pending
-      - id: rel03.0-uc003-personalized-greeting
-        status: pending
-      - id: rel03.0-uc004-error-unknown-flag
+      - id: rel03.0-uc003-help-and-errors
         status: pending
 
 prioritization:
