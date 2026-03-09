@@ -7,9 +7,8 @@ title: Test Suite for Release 03.0 — CLI Enhancements
 release: "03.0"
 
 traces:
-  - rel03.0-uc002-version-output
-  - rel03.0-uc003-personalized-greeting
-  - rel03.0-uc004-error-unknown-flag
+  - rel03.0-uc002-greeting-and-version
+  - rel03.0-uc003-help-and-errors
 
 preconditions:
   - The sdd-hello-world binary is compiled from Go source files that include flag parsing logic in cmd/sdd-hello-world/main.go.

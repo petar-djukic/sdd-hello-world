@@ -1,0 +1,69 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: rel03.0-uc002-greeting-and-version
+title: Flag-Based Greeting and Version
+
+summary: |
+  We run the sdd-hello-world binary with the --version and --name flags to
+  verify that flag parsing produces correct stdout output. The --version flag
+  prints the Version constant. The --name flag personalizes the greeting.
+  Running with no flags preserves the default "Hello, World!" behavior from
+  prd001. This use case exercises the stdout-producing flag paths.
+
+actor: Developer or CI pipeline
+
+trigger: |
+  The compiled sdd-hello-world binary exists after a successful build, and
+  the user or test harness invokes it with --version, --name, or no flags.
+
+flow:
+  - id: F1
+    text: Build the binary with go build ./cmd/sdd-hello-world.
+  - id: F2
+    text: Run the binary with --version and capture stdout and exit code.
+  - id: F3
+    text: Verify stdout contains the Version constant value followed by a newline, no greeting text appears, and exit code is 0.
+  - id: F4
+    text: Run the binary with --name Alice and capture stdout and exit code.
+  - id: F5
+    text: Verify stdout is "Hello, Alice!\n" and exit code is 0.
+  - id: F6
+    text: Run the binary with no flags and capture stdout and exit code.
+  - id: F7
+    text: Verify stdout is "Hello, World!\n" and exit code is 0 (default behavior preserved).
+
+touchpoints:
+  - id: T1
+    text: |
+      Binary component (cmd/sdd-hello-world/main.go) — exercises the flag
+      parsing logic for --version and --name, and the default greeting path.
+      Implements prd002-cli-enhancements R1.1, R1.2, R1.3, R2.1, R2.2, R2.3.
+  - id: T2
+    text: |
+      Version file (cmd/sdd-hello-world/version.go) — the Version constant
+      whose value is printed to stdout when --version is provided. Implements
+      prd002-cli-enhancements R1.1.
+
+success_criteria:
+  - id: S1
+    criterion: |
+      The binary with --version prints the Version constant value followed
+      by a newline to stdout and exits with code 0. No greeting text appears.
+    traces: [AC1]
+  - id: S2
+    criterion: |
+      The binary with --name Alice prints "Hello, Alice!\n" to stdout and
+      exits with code 0.
+    traces: [AC2]
+  - id: S3
+    criterion: |
+      The binary with no flags prints "Hello, World!\n" to stdout and exits
+      with code 0, preserving default behavior.
+    traces: [AC3]
+
+out_of_scope:
+  - Combining --version with --name (flag precedence)
+  - Empty string or special character handling for --name values
+
+test_suite: test-rel03.0
