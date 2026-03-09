@@ -1,0 +1,74 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: prd002-cli-enhancements
+title: CLI Enhancements
+
+problem: |
+  The hello world binary accepts no arguments and produces only one output.
+  With a single use case and one release, the cobbler-scaffold generation
+  pipeline completes in a single cycle. We need additional requirements that
+  exercise multi-cycle generation: multiple use cases within a release, flag
+  parsing, error handling, and version reporting. These requirements must use
+  only the Go standard library so the zero-dependency constraint from prd001
+  is preserved.
+
+goals:
+  - id: G1
+    text: |
+      Add command-line flag support to the hello world binary using the Go
+      standard library flag package, enabling version reporting, personalized
+      greetings, and usage help.
+  - id: G2
+    text: |
+      Provide enough distinct requirements to populate rel03.0 with multiple
+      use cases, exercising the cobbler-scaffold multi-cycle generation
+      pipeline.
+
+requirements:
+  R1:
+    title: Version flag
+    items:
+      - R1.1: The binary must accept a --version flag that prints the Version constant from version.go to stdout followed by a newline.
+      - R1.2: When --version is provided, the binary must exit with code 0 after printing the version.
+      - R1.3: When --version is provided, the binary must not print the greeting.
+  R2:
+    title: Name flag
+    items:
+      - R2.1: The binary must accept a --name flag that takes a string argument.
+      - R2.2: When --name is provided with a value, the binary must print "Hello, <value>!" followed by a newline to stdout, where <value> is the flag argument.
+      - R2.3: When --name is not provided, the binary must print "Hello, World!" followed by a newline to stdout (preserving prd001 R2.1 default behavior).
+  R3:
+    title: Help flag
+    items:
+      - R3.1: The binary must accept a --help flag that prints usage information to stderr and exits with code 0.
+      - R3.2: The usage information must list all supported flags with their descriptions.
+  R4:
+    title: Error handling
+    items:
+      - R4.1: When an unknown flag is provided, the binary must print an error message to stderr.
+      - R4.2: When an unknown flag is provided, the binary must exit with code 1.
+      - R4.3: The binary must use the Go standard library flag package for all flag parsing.
+
+non_goals:
+  - Subcommands or nested flag sets
+  - Reading configuration from files or environment variables
+  - Interactive prompts or stdin reading
+  - Adding external dependencies to go.mod
+
+acceptance_criteria:
+  - id: AC1
+    criterion: Running the binary with --version prints the Version constant followed by a newline to stdout and exits with code 0.
+    traces: [R1.1, R1.2, R1.3]
+  - id: AC2
+    criterion: Running the binary with --name Alice prints "Hello, Alice!\n" to stdout and exits with code 0.
+    traces: [R2.1, R2.2]
+  - id: AC3
+    criterion: Running the binary with no flags prints "Hello, World!\n" to stdout and exits with code 0.
+    traces: [R2.3]
+  - id: AC4
+    criterion: Running the binary with --help prints usage information listing all flags to stderr and exits with code 0.
+    traces: [R3.1, R3.2]
+  - id: AC5
+    criterion: Running the binary with an unknown flag (e.g. --unknown) prints an error to stderr and exits with code 1.
+    traces: [R4.1, R4.2, R4.3]

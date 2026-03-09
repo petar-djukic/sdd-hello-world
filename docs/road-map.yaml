@@ -27,5 +27,22 @@ releases:
       - id: rel02.0-uc001-build-hello-world
         status: pending
 
+  - version: "03.0"
+    name: CLI enhancements
+    status: pending
+    description: |
+      We add command-line flag support to the hello world binary: --version,
+      --name, --help, and error handling for unknown flags. This release
+      provides multiple use cases so the cobbler-scaffold generation pipeline
+      exercises multi-cycle generation with per-UC validation and auto-advance.
+    use_cases:
+      - id: rel03.0-uc002-version-output
+        status: pending
+      - id: rel03.0-uc003-personalized-greeting
+        status: pending
+      - id: rel03.0-uc004-error-unknown-flag
+        status: pending
+
 prioritization:
   - Release 02.0 implements the binary from specifications so the generation pipeline has reproducible work to propose and execute.
+  - Release 03.0 adds CLI flags to exercise multi-cycle generation with multiple use cases per release.

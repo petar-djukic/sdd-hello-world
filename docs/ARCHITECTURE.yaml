@@ -28,11 +28,17 @@ overview:
 interfaces:
   - name: Binary CLI
     summary: |
-      The compiled binary accepts no flags or arguments. It writes "Hello, World!\n"
-      to stdout and exits with code 0.
+      The compiled binary supports --version, --name, and --help flags via
+      the Go standard library flag package. With no flags it writes
+      "Hello, World!\n" to stdout and exits 0. Unknown flags produce an
+      error on stderr and exit 1.
     data_structures: []
     operations:
-      - "main(): write 'Hello, World!' to stdout and exit 0"
+      - "main(): parse flags and dispatch to greeting, version, or error path"
+      - "--version: print Version constant to stdout and exit 0"
+      - "--name <value>: print 'Hello, <value>!' to stdout and exit 0"
+      - "--help: print usage to stderr and exit 0"
+      - "unknown flag: print error to stderr and exit 1"
 
   - name: Mage Targets
     summary: |
@@ -52,12 +58,15 @@ interfaces:
 components:
   - name: Binary
     responsibility: |
-      Single-file Go program. Writes "Hello, World!\n" to stdout and exits 0.
-      Zero external dependencies. The file also defines a Version constant
-      populated at generation time via cmd/sdd-hello-world/version.go.
+      Single-file Go program with flag parsing. Prints a greeting to stdout
+      and exits 0 by default. Supports --version, --name, and --help flags.
+      Zero external dependencies. The Version constant is defined in
+      cmd/sdd-hello-world/version.go.
     capabilities:
-      - Print "Hello, World!" to stdout
-      - Exit with code 0
+      - Print greeting to stdout (default or personalized via --name)
+      - Print version to stdout via --version
+      - Print usage to stderr via --help
+      - Report errors on stderr and exit 1 for unknown flags
     references: []
 
   - name: Magefiles
@@ -132,7 +141,8 @@ implementation_status:
     - done: Configuration (configuration.yaml)
     - done: Documentation (VISION.yaml, ARCHITECTURE.yaml, road-map.yaml, constitutions)
     - done: Tagged and published as Go module
-    - done: PRD, use case, and test suite for hello world binary
+    - done: PRD, use case, and test suite for hello world binary (rel02.0)
+    - done: PRD, use cases, and test suite for CLI enhancements (rel03.0)
     - pending: Go binary (cmd/sdd-hello-world/main.go, cmd/sdd-hello-world/version.go)
 
 related_documents:
@@ -146,5 +156,15 @@ related_documents:
     purpose: Build and run use case for release 02.0
   - doc: docs/specs/test-suites/test-rel02.0.yaml
     purpose: Test suite validating the binary use case
+  - doc: docs/specs/product-requirements/prd002-cli-enhancements.yaml
+    purpose: CLI flag requirements (version, name, help, error handling)
+  - doc: docs/specs/use-cases/rel03.0-uc002-version-output.yaml
+    purpose: Version output use case for release 03.0
+  - doc: docs/specs/use-cases/rel03.0-uc003-personalized-greeting.yaml
+    purpose: Personalized greeting use case for release 03.0
+  - doc: docs/specs/use-cases/rel03.0-uc004-error-unknown-flag.yaml
+    purpose: Error handling use case for release 03.0
+  - doc: docs/specs/test-suites/test-rel03.0.yaml
+    purpose: Test suite validating CLI enhancement use cases
   - doc: configuration.yaml
     purpose: Orchestrator configuration

@@ -1,0 +1,49 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: rel03.0-uc004-error-unknown-flag
+title: Error on Unknown Flag
+
+summary: |
+  We run the sdd-hello-world binary with an unrecognized flag and verify
+  that it prints an error message to stderr and exits with code 1. This
+  use case validates the error handling path of the flag package integration.
+
+actor: Developer or CI pipeline
+
+trigger: |
+  The compiled sdd-hello-world binary exists after a successful build, and
+  the user or test harness invokes it with an unknown flag such as --unknown.
+
+flow:
+  - id: F1
+    text: Build the binary with go build ./cmd/sdd-hello-world.
+  - id: F2
+    text: Run the binary with --unknown flag.
+  - id: F3
+    text: Capture stderr and the exit code.
+  - id: F4
+    text: Verify stderr contains an error message about the unrecognized flag.
+  - id: F5
+    text: Verify exit code is 1.
+
+touchpoints:
+  - id: T1
+    text: |
+      Binary component (cmd/sdd-hello-world/main.go) — exercises the error
+      handling path when the flag package encounters an unknown flag.
+      Implements prd002-cli-enhancements R4.1, R4.2, R4.3.
+
+success_criteria:
+  - id: S1
+    criterion: |
+      The binary with an unknown flag (e.g. --unknown) prints an error
+      message to stderr and exits with code 1. No greeting text appears
+      on stdout.
+    traces: [AC5]
+
+out_of_scope:
+  - Specific error message format (flag package default is acceptable)
+  - Multiple unknown flags in a single invocation
+
+test_suite: test-rel03.0
