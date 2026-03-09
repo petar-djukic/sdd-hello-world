@@ -1,0 +1,87 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: prd003-config
+title: Configuration File Support
+
+problem: |
+  The hello world binary accepts flags for individual settings but has no way
+  to load multiple settings from a file. With only two PRDs and 17 R-items,
+  the cobbler-scaffold generation pipeline completes in two to three stitch
+  cycles, which is too few to exercise cross-batch duplicate detection and
+  partial UC completion gating. We need a third PRD with enough R-items to
+  require three or more stitch tasks, exercising the requirement tracking
+  pipeline at scale. A JSON configuration file adds 12 R-items across four
+  groups while preserving the zero-dependency constraint (encoding/json is
+  in the Go standard library).
+
+goals:
+  - id: G1
+    text: |
+      Add a --config flag that loads greeting settings from a JSON file,
+      enabling name, template, and output format configuration without
+      requiring multiple command-line flags.
+  - id: G2
+    text: |
+      Provide enough distinct requirements (12 R-items across 4 groups) to
+      exercise multi-task generation with cross-batch duplicate detection
+      and partial UC completion in the cobbler-scaffold pipeline.
+
+requirements:
+  R1:
+    title: Config file loading
+    items:
+      - R1.1: The binary must accept a --config flag that takes a file path argument.
+      - R1.2: The binary must parse the config file as JSON with three optional string fields named "name", "template", and "format".
+      - R1.3: When --config is not provided, no config file is loaded and all behavior defaults apply as specified in prd001 and prd002.
+  R2:
+    title: Config-driven behavior
+    items:
+      - R2.1: When the config file contains a "name" field, the binary must use its value as the greeting name, equivalent to providing --name with the same value.
+      - R2.2: When the config file contains a "template" field, the binary must use its value as the greeting format string. The template must contain exactly one %s verb which is replaced by the name.
+      - R2.3: When the config file contains a "format" field set to "json", the binary must output a JSON object with "greeting" and "name" string fields to stdout instead of plain text. When set to "text" or absent, the binary must output plain text.
+  R3:
+    title: Flag precedence
+    items:
+      - R3.1: When both --name and a config name field are provided, --name must take precedence over the config name.
+      - R3.2: When --version is provided alongside --config, the binary must print the version and exit 0 without reading the config file.
+      - R3.3: When the config file sets name and --name is not provided, the config name must be used for the greeting.
+  R4:
+    title: Config validation
+    items:
+      - R4.1: When --config points to a file that does not exist, the binary must print an error message to stderr and exit with code 1.
+      - R4.2: When --config points to a file containing invalid JSON, the binary must print an error message to stderr and exit with code 1.
+      - R4.3: When the config file contains fields not defined in R1.2, the binary must silently ignore them.
+
+non_goals:
+  - Nested or hierarchical configuration
+  - Environment variable configuration sources
+  - Config file auto-discovery (e.g., searching home directory)
+  - YAML, TOML, or INI config formats
+  - Adding external dependencies to go.mod
+
+acceptance_criteria:
+  - id: AC1
+    criterion: Running the binary with --config pointing to a valid JSON file containing {"name":"Bob"} prints "Hello, Bob!\n" to stdout and exits with code 0.
+    traces: [R1.1, R1.2, R1.3, R2.1]
+  - id: AC2
+    criterion: Running the binary with --config pointing to a valid JSON file containing {"template":"Greetings, %s!"} prints "Greetings, World!\n" to stdout and exits with code 0.
+    traces: [R1.2, R2.2]
+  - id: AC3
+    criterion: Running the binary with --config pointing to a valid JSON file containing {"format":"json"} prints a JSON object with greeting and name fields to stdout and exits with code 0.
+    traces: [R2.3]
+  - id: AC4
+    criterion: Running the binary with --config config.json --name Alice where config.json contains {"name":"Bob"} prints "Hello, Alice!\n" (--name wins).
+    traces: [R3.1, R3.3]
+  - id: AC5
+    criterion: Running the binary with --config config.json --version prints the version and exits 0 without reading config.json.
+    traces: [R3.2]
+  - id: AC6
+    criterion: Running the binary with --config nonexistent.json prints an error to stderr and exits with code 1.
+    traces: [R4.1]
+  - id: AC7
+    criterion: Running the binary with --config pointing to a file containing invalid JSON prints an error to stderr and exits with code 1.
+    traces: [R4.2]
+  - id: AC8
+    criterion: Running the binary with --config pointing to a JSON file containing {"unknown_field":"value"} does not produce an error. The unknown field is ignored.
+    traces: [R4.3]
