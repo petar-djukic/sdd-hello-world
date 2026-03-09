@@ -1,0 +1,66 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: rel04.0-uc005-config-validation
+title: Configuration File Validation and Errors
+
+summary: |
+  We run the sdd-hello-world binary with --config pointing to invalid or
+  missing files to verify that error handling works correctly. A nonexistent
+  file and malformed JSON both produce stderr errors and exit code 1. Unknown
+  fields in valid JSON are silently ignored. This use case exercises the
+  validation and error paths of the config loading logic.
+
+actor: Developer or CI pipeline
+
+trigger: |
+  The compiled sdd-hello-world binary exists after a successful build, and
+  the user or test harness invokes it with --config pointing to a nonexistent
+  file, a file with invalid JSON, or a file with unknown fields.
+
+flow:
+  - id: F1
+    text: Build the binary with go build ./cmd/sdd-hello-world.
+  - id: F2
+    text: Run the binary with --config nonexistent.json. Capture stderr and exit code.
+  - id: F3
+    text: Verify stderr contains an error message about the missing file and exit code is 1.
+  - id: F4
+    text: Create a file containing "not valid json{" and run the binary with --config pointing to it. Capture stderr and exit code.
+  - id: F5
+    text: Verify stderr contains an error message about invalid JSON and exit code is 1.
+  - id: F6
+    text: Create a JSON file containing {"unknown_field":"value","name":"Eve"} and run the binary with --config pointing to it. Capture stdout and exit code.
+  - id: F7
+    text: Verify stdout is "Hello, Eve!\n", no error appears on stderr, and exit code is 0 (unknown field ignored).
+
+touchpoints:
+  - id: T1
+    text: |
+      Binary component (cmd/sdd-hello-world/main.go) — exercises the config
+      file error handling for missing files, malformed JSON, and unknown
+      fields. Implements prd003-config R4.1, R4.2, R4.3.
+
+success_criteria:
+  - id: S1
+    criterion: |
+      The binary with --config pointing to a nonexistent file prints an error
+      to stderr and exits with code 1. No greeting appears on stdout.
+    traces: [AC6]
+  - id: S2
+    criterion: |
+      The binary with --config pointing to invalid JSON prints an error to
+      stderr and exits with code 1. No greeting appears on stdout.
+    traces: [AC7]
+  - id: S3
+    criterion: |
+      The binary with --config pointing to JSON with unknown fields prints
+      the greeting normally. The unknown fields are silently ignored.
+    traces: [AC8]
+
+out_of_scope:
+  - Config file with read permission errors
+  - Config file that is a directory
+  - Empty config file (valid JSON with no fields)
+
+test_suite: test-rel04.0

@@ -7,10 +7,11 @@ title: SDD Hello World Specifications
 overview: |
   SDD Hello World is a minimal test fixture for cobbler-scaffold. The project
   specifies a Go binary that prints "Hello, World!" and exits 0, with CLI
-  enhancements (version, name, help flags) in a second release. The
-  cobbler-scaffold generation pipeline reads the PRDs and produces the Go
-  source files. For goals and boundaries see VISION.yaml. For components and
-  structure see ARCHITECTURE.yaml.
+  enhancements (version, name, help flags) in a second release and JSON
+  configuration file support in a third. The cobbler-scaffold generation
+  pipeline reads the PRDs and produces the Go source files. For goals and
+  boundaries see VISION.yaml. For components and structure see
+  ARCHITECTURE.yaml.
 
 roadmap_summary:
   - version: "01.0"
@@ -25,6 +26,11 @@ roadmap_summary:
     status: pending
   - version: "03.0"
     name: CLI enhancements
+    use_cases_done: 0
+    use_cases_total: 2
+    status: pending
+  - version: "04.0"
+    name: Configuration file support
     use_cases_done: 0
     use_cases_total: 2
     status: pending
@@ -45,6 +51,15 @@ prd_index:
       produce an error on stderr with exit code 1. Uses Go standard library
       flag package only.
     path: docs/specs/product-requirements/prd002-cli-enhancements.yaml
+  - id: prd003-config
+    title: Configuration File Support
+    summary: |
+      Adds JSON configuration file support via --config flag. Config sets
+      greeting name, template, and output format. Flag precedence rules
+      resolve conflicts between --name and config. Validation handles
+      missing files and malformed JSON. Uses encoding/json from the Go
+      standard library.
+    path: docs/specs/product-requirements/prd003-config.yaml
 
 use_case_index:
   - id: rel02.0-uc001-build-hello-world
@@ -65,6 +80,18 @@ use_case_index:
     status: pending
     test_suite: test-rel03.0
     path: docs/specs/use-cases/rel03.0-uc003-help-and-errors.yaml
+  - id: rel04.0-uc004-config-loading
+    title: Configuration File Loading and Behavior
+    release: "04.0"
+    status: pending
+    test_suite: test-rel04.0
+    path: docs/specs/use-cases/rel04.0-uc004-config-loading.yaml
+  - id: rel04.0-uc005-config-validation
+    title: Configuration File Validation and Errors
+    release: "04.0"
+    status: pending
+    test_suite: test-rel04.0
+    path: docs/specs/use-cases/rel04.0-uc005-config-validation.yaml
 
 test_suite_index:
   - id: test-rel02.0
@@ -80,6 +107,13 @@ test_suite_index:
       - rel03.0-uc003-help-and-errors
     test_case_count: 7
     path: docs/specs/test-suites/test-rel03.0.yaml
+  - id: test-rel04.0
+    title: Test Suite for Release 04.0 — Configuration File Support
+    traces:
+      - rel04.0-uc004-config-loading
+      - rel04.0-uc005-config-validation
+    test_case_count: 8
+    path: docs/specs/test-suites/test-rel04.0.yaml
 
 prd_to_use_case_mapping:
   - use_case: rel02.0-uc001-build-hello-world
@@ -102,10 +136,24 @@ prd_to_use_case_mapping:
       information, and unknown flags produce an error with exit code 1.
     coverage: R3.1, R3.2, R4.1, R4.2, R4.3
 
+  - use_case: rel04.0-uc004-config-loading
+    prd: prd003-config
+    why_required: |
+      Validates config file loading, config-driven behavior (name, template,
+      format), and flag precedence when --name or --version is combined with
+      --config.
+    coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3, R3.1, R3.2, R3.3
+  - use_case: rel04.0-uc005-config-validation
+    prd: prd003-config
+    why_required: |
+      Validates error handling for missing config files, malformed JSON, and
+      unknown fields in the config file.
+    coverage: R4.1, R4.2, R4.3
+
 coverage_gaps: |
-  No coverage gaps. All prd002-cli-enhancements requirements are covered:
-  R1 and R2 by UC002 (greeting and version), R3 and R4 by UC003 (help and
-  errors).
+  No coverage gaps. All PRD requirements are covered: prd001 by UC001,
+  prd002 R1-R2 by UC002, prd002 R3-R4 by UC003, prd003 R1-R3 by UC004,
+  prd003 R4 by UC005.
 
 references:
   - VISION.yaml

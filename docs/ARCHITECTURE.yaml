@@ -28,15 +28,18 @@ overview:
 interfaces:
   - name: Binary CLI
     summary: |
-      The compiled binary supports --version, --name, and --help flags via
-      the Go standard library flag package. With no flags it writes
-      "Hello, World!\n" to stdout and exits 0. Unknown flags produce an
-      error on stderr and exit 1.
-    data_structures: []
+      The compiled binary supports --version, --name, --help, and --config
+      flags via the Go standard library flag package. With no flags it writes
+      "Hello, World!\n" to stdout and exits 0. The --config flag loads a JSON
+      file that sets greeting name, template, and output format. Unknown flags
+      produce an error on stderr and exit 1.
+    data_structures:
+      - "Config: struct with Name, Template, Format string fields, parsed from JSON via encoding/json"
     operations:
-      - "main(): parse flags and dispatch to greeting, version, or error path"
+      - "main(): parse flags and dispatch to greeting, version, config, or error path"
       - "--version: print Version constant to stdout and exit 0"
       - "--name <value>: print 'Hello, <value>!' to stdout and exit 0"
+      - "--config <path>: load JSON config file and apply settings"
       - "--help: print usage to stderr and exit 0"
       - "unknown flag: print error to stderr and exit 1"
 
@@ -59,14 +62,18 @@ components:
   - name: Binary
     responsibility: |
       Single-file Go program with flag parsing. Prints a greeting to stdout
-      and exits 0 by default. Supports --version, --name, and --help flags.
-      Zero external dependencies. The Version constant is defined in
-      cmd/sdd-hello-world/version.go.
+      and exits 0 by default. Supports --version, --name, --help, and
+      --config flags. The --config flag loads a JSON file that sets greeting
+      name, template, and output format. Zero external dependencies (JSON
+      parsing uses encoding/json from stdlib). The Version constant is
+      defined in cmd/sdd-hello-world/version.go.
     capabilities:
-      - Print greeting to stdout (default or personalized via --name)
+      - Print greeting to stdout (default or personalized via --name or config)
       - Print version to stdout via --version
+      - Load JSON config file via --config (name, template, format fields)
+      - Output greeting as JSON object when config format is "json"
       - Print usage to stderr via --help
-      - Report errors on stderr and exit 1 for unknown flags
+      - Report errors on stderr and exit 1 for unknown flags or invalid config
     references: []
 
   - name: Magefiles
@@ -143,6 +150,7 @@ implementation_status:
     - done: Tagged and published as Go module
     - done: PRD, use case, and test suite for hello world binary (rel02.0)
     - done: PRD, use cases, and test suite for CLI enhancements (rel03.0)
+    - done: PRD, use cases, and test suite for config file support (rel04.0)
     - pending: Go binary (cmd/sdd-hello-world/main.go, cmd/sdd-hello-world/version.go)
 
 related_documents:
@@ -164,5 +172,13 @@ related_documents:
     purpose: Help and error handling use case for release 03.0 (R3, R4)
   - doc: docs/specs/test-suites/test-rel03.0.yaml
     purpose: Test suite validating CLI enhancement use cases
+  - doc: docs/specs/product-requirements/prd003-config.yaml
+    purpose: Config file requirements (loading, behavior, precedence, validation)
+  - doc: docs/specs/use-cases/rel04.0-uc004-config-loading.yaml
+    purpose: Config loading and behavior use case for release 04.0 (R1, R2, R3)
+  - doc: docs/specs/use-cases/rel04.0-uc005-config-validation.yaml
+    purpose: Config validation and error handling use case for release 04.0 (R4)
+  - doc: docs/specs/test-suites/test-rel04.0.yaml
+    purpose: Test suite validating config file use cases
   - doc: configuration.yaml
     purpose: Orchestrator configuration

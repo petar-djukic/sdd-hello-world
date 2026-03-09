@@ -41,6 +41,22 @@ releases:
       - id: rel03.0-uc003-help-and-errors
         status: pending
 
+  - version: "04.0"
+    name: Configuration file support
+    status: pending
+    description: |
+      We add JSON configuration file support via a --config flag. The config
+      sets greeting name, template, and output format. This release provides
+      12 R-items across 4 groups, requiring three or more stitch tasks and
+      exercising cross-batch duplicate detection and partial UC completion
+      gating in the cobbler-scaffold pipeline.
+    use_cases:
+      - id: rel04.0-uc004-config-loading
+        status: pending
+      - id: rel04.0-uc005-config-validation
+        status: pending
+
 prioritization:
   - Release 02.0 implements the binary from specifications so the generation pipeline has reproducible work to propose and execute.
   - Release 03.0 adds CLI flags to exercise multi-cycle generation with multiple use cases per release.
+  - Release 04.0 adds config file support to exercise cross-batch duplicate detection with 12 R-items across 3+ stitch tasks.

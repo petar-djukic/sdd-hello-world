@@ -1,0 +1,82 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: test-rel04.0
+title: Test Suite for Release 04.0 — Configuration File Support
+
+release: "04.0"
+
+traces:
+  - rel04.0-uc004-config-loading
+  - rel04.0-uc005-config-validation
+
+preconditions:
+  - The sdd-hello-world binary is compiled from Go source files that include config file loading logic in cmd/sdd-hello-world/main.go.
+  - The binary accepts --config, --name, and --version flags.
+  - The go.mod file declares no external dependencies (JSON parsing uses encoding/json from the standard library).
+
+test_cases:
+  - name: Config name sets greeting name
+    inputs: |
+      Create a JSON file containing {"name":"Bob"}.
+      Run the compiled sdd-hello-world binary with --config pointing to it.
+    expected: |
+      Stdout contains exactly "Hello, Bob!" followed by a newline. Exit
+      code is 0.
+
+  - name: Config template changes greeting format
+    inputs: |
+      Create a JSON file containing {"template":"Greetings, %s!"}.
+      Run the compiled sdd-hello-world binary with --config pointing to it.
+    expected: |
+      Stdout contains exactly "Greetings, World!" followed by a newline.
+      Exit code is 0.
+
+  - name: Config JSON output format
+    inputs: |
+      Create a JSON file containing {"format":"json"}.
+      Run the compiled sdd-hello-world binary with --config pointing to it.
+    expected: |
+      Stdout contains a valid JSON object with "greeting" and "name"
+      string fields. Exit code is 0.
+
+  - name: Flag name overrides config name
+    inputs: |
+      Create a JSON file containing {"name":"Bob"}.
+      Run the compiled sdd-hello-world binary with --config pointing to it
+      and --name Alice.
+    expected: |
+      Stdout contains exactly "Hello, Alice!" followed by a newline. The
+      --name flag value takes precedence over the config name.
+
+  - name: Version flag ignores config
+    inputs: |
+      Create a JSON file containing {"name":"Bob"}.
+      Run the compiled sdd-hello-world binary with --config pointing to it
+      and --version.
+    expected: |
+      Stdout contains the Version constant value followed by a newline.
+      No greeting text appears. Exit code is 0.
+
+  - name: Missing config file produces error
+    inputs: |
+      Run the compiled sdd-hello-world binary with --config nonexistent.json.
+    expected: |
+      Stderr contains an error message about the missing file. Exit code
+      is 1. No greeting appears on stdout.
+
+  - name: Invalid JSON config produces error
+    inputs: |
+      Create a file containing "not valid json{".
+      Run the compiled sdd-hello-world binary with --config pointing to it.
+    expected: |
+      Stderr contains an error message about invalid JSON. Exit code is 1.
+      No greeting appears on stdout.
+
+  - name: Unknown config fields are ignored
+    inputs: |
+      Create a JSON file containing {"unknown_field":"value","name":"Eve"}.
+      Run the compiled sdd-hello-world binary with --config pointing to it.
+    expected: |
+      Stdout contains exactly "Hello, Eve!" followed by a newline. No
+      error appears on stderr. Exit code is 0.

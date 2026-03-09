@@ -1,0 +1,86 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: rel04.0-uc004-config-loading
+title: Configuration File Loading and Behavior
+
+summary: |
+  We run the sdd-hello-world binary with --config pointing to a JSON file
+  to verify that config-driven greeting behavior works. The config file sets
+  the name, template, and output format. When combined with --name, the flag
+  takes precedence. When combined with --version, the version is printed
+  without reading the config. This use case exercises the happy-path config
+  loading and flag precedence logic.
+
+actor: Developer or CI pipeline
+
+trigger: |
+  The compiled sdd-hello-world binary exists after a successful build, and
+  the user or test harness invokes it with --config pointing to a valid JSON
+  configuration file.
+
+flow:
+  - id: F1
+    text: Build the binary with go build ./cmd/sdd-hello-world.
+  - id: F2
+    text: Create a JSON config file with {"name":"Bob"} and run the binary with --config pointing to it. Capture stdout and exit code.
+  - id: F3
+    text: Verify stdout is "Hello, Bob!\n" and exit code is 0.
+  - id: F4
+    text: Create a JSON config file with {"template":"Greetings, %s!"} and run the binary with --config pointing to it. Capture stdout.
+  - id: F5
+    text: Verify stdout is "Greetings, World!\n" and exit code is 0.
+  - id: F6
+    text: Create a JSON config file with {"format":"json"} and run the binary with --config pointing to it. Capture stdout.
+  - id: F7
+    text: Verify stdout is a JSON object with "greeting" and "name" fields and exit code is 0.
+  - id: F8
+    text: Run the binary with --config {"name":"Bob"} and --name Alice. Capture stdout.
+  - id: F9
+    text: Verify stdout is "Hello, Alice!\n" (--name overrides config name).
+  - id: F10
+    text: Run the binary with --config config.json and --version. Capture stdout and exit code.
+  - id: F11
+    text: Verify stdout contains the version string, no greeting appears, and exit code is 0.
+
+touchpoints:
+  - id: T1
+    text: |
+      Binary component (cmd/sdd-hello-world/main.go) — exercises the config
+      file loading, JSON parsing, template application, JSON output mode,
+      and flag precedence logic. Implements prd003-config R1.1, R1.2, R1.3,
+      R2.1, R2.2, R2.3, R3.1, R3.2, R3.3.
+
+success_criteria:
+  - id: S1
+    criterion: |
+      The binary with --config pointing to {"name":"Bob"} prints "Hello, Bob!\n"
+      to stdout and exits with code 0.
+    traces: [AC1]
+  - id: S2
+    criterion: |
+      The binary with --config pointing to {"template":"Greetings, %s!"} prints
+      "Greetings, World!\n" to stdout and exits with code 0.
+    traces: [AC2]
+  - id: S3
+    criterion: |
+      The binary with --config pointing to {"format":"json"} prints a JSON
+      object with greeting and name fields to stdout and exits with code 0.
+    traces: [AC3]
+  - id: S4
+    criterion: |
+      When --name Alice and --config {"name":"Bob"} are both provided, stdout
+      is "Hello, Alice!\n" (flag wins).
+    traces: [AC4]
+  - id: S5
+    criterion: |
+      When --version and --config are both provided, the version is printed
+      and exit code is 0. The config file is not read.
+    traces: [AC5]
+
+out_of_scope:
+  - Config file with all three fields set simultaneously
+  - Config file in non-JSON formats
+  - Config file permissions or ownership checks
+
+test_suite: test-rel04.0
