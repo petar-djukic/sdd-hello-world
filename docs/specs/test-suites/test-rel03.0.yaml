@@ -1,0 +1,65 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: test-rel03.0
+title: Test Suite for Release 03.0 — CLI Enhancements
+
+release: "03.0"
+
+traces:
+  - rel03.0-uc002-version-output
+  - rel03.0-uc003-personalized-greeting
+  - rel03.0-uc004-error-unknown-flag
+
+preconditions:
+  - The sdd-hello-world binary is compiled from Go source files that include flag parsing logic in cmd/sdd-hello-world/main.go.
+  - The Version constant is defined in cmd/sdd-hello-world/version.go.
+  - The go.mod file declares no external dependencies.
+
+test_cases:
+  - name: Version flag prints version
+    inputs: |
+      Run the compiled sdd-hello-world binary with --version.
+    expected: |
+      Stdout contains the Version constant value followed by a newline.
+      No greeting text appears. Exit code is 0.
+
+  - name: Version flag suppresses greeting
+    inputs: |
+      Run the compiled sdd-hello-world binary with --version and capture stdout.
+    expected: |
+      Stdout does not contain "Hello". Only the version string appears.
+
+  - name: Personalized greeting with name flag
+    inputs: |
+      Run the compiled sdd-hello-world binary with --name Alice.
+    expected: |
+      Stdout contains exactly "Hello, Alice!" followed by a newline. Exit
+      code is 0.
+
+  - name: Default greeting without name flag
+    inputs: |
+      Run the compiled sdd-hello-world binary with no flags.
+    expected: |
+      Stdout contains exactly "Hello, World!" followed by a newline. Exit
+      code is 0.
+
+  - name: Help flag prints usage
+    inputs: |
+      Run the compiled sdd-hello-world binary with --help.
+    expected: |
+      Stderr contains usage information listing the supported flags
+      (--version, --name, --help). Exit code is 0.
+
+  - name: Unknown flag produces error
+    inputs: |
+      Run the compiled sdd-hello-world binary with --unknown.
+    expected: |
+      Stderr contains an error message about the unrecognized flag.
+      Exit code is 1.
+
+  - name: Unknown flag produces no greeting
+    inputs: |
+      Run the compiled sdd-hello-world binary with --unknown and capture stdout.
+    expected: |
+      Stdout is empty. No greeting text is printed.

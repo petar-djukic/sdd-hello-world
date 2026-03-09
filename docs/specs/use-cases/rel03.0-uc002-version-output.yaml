@@ -1,0 +1,54 @@
+# Copyright (c) 2026 Petar Djukic. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+id: rel03.0-uc002-version-output
+title: Version Output
+
+summary: |
+  We run the sdd-hello-world binary with the --version flag and verify that
+  it prints the Version constant and exits with code 0. This use case
+  validates that the flag package integration works and that --version
+  suppresses the greeting output.
+
+actor: Developer or CI pipeline
+
+trigger: |
+  The compiled sdd-hello-world binary exists after a successful build, and
+  the user or test harness invokes it with the --version flag.
+
+flow:
+  - id: F1
+    text: Build the binary with go build ./cmd/sdd-hello-world.
+  - id: F2
+    text: Run the binary with --version flag.
+  - id: F3
+    text: Capture stdout and the exit code.
+  - id: F4
+    text: Verify stdout contains the Version constant value followed by a newline and no greeting text.
+  - id: F5
+    text: Verify exit code is 0.
+
+touchpoints:
+  - id: T1
+    text: |
+      Binary component (cmd/sdd-hello-world/main.go) — exercises the flag
+      parsing logic that intercepts --version before the greeting path.
+      Implements prd002-cli-enhancements R1.1, R1.2, R1.3.
+  - id: T2
+    text: |
+      Version file (cmd/sdd-hello-world/version.go) — the Version constant
+      whose value is printed to stdout. Implements prd002-cli-enhancements R1.1.
+
+success_criteria:
+  - id: S1
+    criterion: |
+      The binary with --version prints the Version constant value followed
+      by a newline to stdout and exits with code 0. No greeting text appears
+      in the output.
+    traces: [AC1]
+
+out_of_scope:
+  - Version format validation (the constant is a free-form string)
+  - Combining --version with other flags
+
+test_suite: test-rel03.0
