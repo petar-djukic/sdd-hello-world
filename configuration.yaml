@@ -24,6 +24,11 @@ project:
         docs/engineering/eng*.yaml
         docs/constitutions/*.yaml
         docs/*.yaml
+    context_exclude: |
+        docs/constitutions/
+        docs/SPECIFICATIONS.yaml
+        docs/prompts/
+        docs/engineering/
     seed_files:
         cmd/sdd-hello-world/version.go: magefiles/version.go.tmpl
 generation:
