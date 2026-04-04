@@ -35,7 +35,7 @@ roadmap_summary:
     use_cases_total: 2
     status: pending
 
-prd_index:
+srd_index:
   - id: srd001-hello-world-binary
     title: Hello World Binary
     summary: |
@@ -115,36 +115,36 @@ test_suite_index:
     test_case_count: 8
     path: docs/specs/test-suites/test-rel04.0.yaml
 
-prd_to_use_case_mapping:
+srd_to_use_case_mapping:
   - use_case: rel02.0-uc001-build-hello-world
-    prd: srd001-hello-world-binary
+    srd: srd001-hello-world-binary
     why_required: |
       The use case exercises all SRD requirements by building and running the
       binary, verifying output, exit code, and file structure.
     coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3
   - use_case: rel03.0-uc002-greeting-and-version
-    prd: srd002-cli-enhancements
+    srd: srd002-cli-enhancements
     why_required: |
       Validates the stdout-producing flag paths: --version prints the Version
       constant, --name personalizes the greeting, and the default greeting is
       preserved when no flag is provided.
     coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3
   - use_case: rel03.0-uc003-help-and-errors
-    prd: srd002-cli-enhancements
+    srd: srd002-cli-enhancements
     why_required: |
       Validates the stderr-producing flag paths: --help prints usage
       information, and unknown flags produce an error with exit code 1.
     coverage: R3.1, R3.2, R4.1, R4.2, R4.3
 
   - use_case: rel04.0-uc004-config-loading
-    prd: srd003-config
+    srd: srd003-config
     why_required: |
       Validates config file loading, config-driven behavior (name, template,
       format), and flag precedence when --name or --version is combined with
       --config.
     coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3, R3.1, R3.2, R3.3
   - use_case: rel04.0-uc005-config-validation
-    prd: srd003-config
+    srd: srd003-config
     why_required: |
       Validates error handling for missing config files, malformed JSON, and
       unknown fields in the config file.
