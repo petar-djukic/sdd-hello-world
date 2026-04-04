@@ -13,6 +13,12 @@ articles:
       99.0 (unscheduled). Early preview of later use cases is allowed when they
       share functionality with the current release.
 
+      Use cases in road-map.yaml carry a status field. Use cases with
+      status "implemented" or "done" have existing code and are complete.
+      Do not propose any new tasks for them. Propose tasks only for use
+      cases with status "spec_complete", "pending", or any other value
+      that is not "implemented" or "done".
+
   - id: P2
     title: Task sizing
     rule: |
@@ -167,7 +173,7 @@ issue_structure:
       - type: SRD
         location: "docs/specs/software-requirements/srd[NNN]-[feature-name].yaml"
         format_rule: srd-format
-        when: New or updated software requirements
+        when: New or updated product requirements
 
       - type: Use case
         location: "docs/specs/use-cases/rel[NN].[N]-uc[NNN]-[short-name].yaml"
@@ -206,7 +212,7 @@ example_documentation_issue: |
 
   required_reading:
     - docs/ARCHITECTURE.yaml (components section)
-    - docs/specs/software-requirements/srd001-hello-world-binary.yaml
+    - docs/specs/software-requirements/srd001-cupboard-core.yaml
 
   files:
     - path: docs/specs/software-requirements/srd-feature-name.yaml
@@ -232,7 +238,7 @@ example_code_issue: |
 
   required_reading:
     - docs/specs/software-requirements/srd003-crumbs-interface.yaml
-    - cmd/sdd-hello-world/main.go
+    - pkg/types/cupboard.go
 
   files:
     - path: pkg/types/crumb.go
@@ -255,7 +261,7 @@ example_code_issue: |
 
   design_decisions:
     - id: D1
-      text: Follow binary structure from srd001-hello-world-binary
+      text: Use table accessor pattern from srd001-cupboard-core
     - id: D2
       text: Filter as map[string]any per SRD
 
