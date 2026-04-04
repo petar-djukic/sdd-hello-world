@@ -19,8 +19,8 @@ releases:
     name: Hello world binary from specifications
     status: pending
     description: |
-      We implement the hello world binary from its PRD specification. The
-      generation pipeline reads prd001-hello-world-binary and produces the Go
+      We implement the hello world binary from its SRD specification. The
+      generation pipeline reads srd001-hello-world-binary and produces the Go
       source files. This release validates that cobbler-scaffold can generate
       code from specs in a clean repository.
     use_cases:

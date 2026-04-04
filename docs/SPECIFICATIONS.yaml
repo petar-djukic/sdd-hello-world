@@ -9,7 +9,7 @@ overview: |
   specifies a Go binary that prints "Hello, World!" and exits 0, with CLI
   enhancements (version, name, help flags) in a second release and JSON
   configuration file support in a third. The cobbler-scaffold generation
-  pipeline reads the PRDs and produces the Go source files. For goals and
+  pipeline reads the SRDs and produces the Go source files. For goals and
   boundaries see VISION.yaml. For components and structure see
   ARCHITECTURE.yaml.
 
@@ -35,23 +35,23 @@ roadmap_summary:
     use_cases_total: 2
     status: pending
 
-prd_index:
-  - id: prd001-hello-world-binary
+srd_index:
+  - id: srd001-hello-world-binary
     title: Hello World Binary
     summary: |
       Specifies the Go binary that prints "Hello, World!" and exits 0. Covers
       file structure (main.go, version.go), runtime behavior, and zero-dependency
       constraint.
-    path: docs/specs/product-requirements/prd001-hello-world-binary.yaml
-  - id: prd002-cli-enhancements
+    path: docs/specs/software-requirements/srd001-hello-world-binary.yaml
+  - id: srd002-cli-enhancements
     title: CLI Enhancements
     summary: |
       Adds command-line flag support: --version prints the version constant,
       --name personalizes the greeting, --help shows usage, and unknown flags
       produce an error on stderr with exit code 1. Uses Go standard library
       flag package only.
-    path: docs/specs/product-requirements/prd002-cli-enhancements.yaml
-  - id: prd003-config
+    path: docs/specs/software-requirements/srd002-cli-enhancements.yaml
+  - id: srd003-config
     title: Configuration File Support
     summary: |
       Adds JSON configuration file support via --config flag. Config sets
@@ -59,7 +59,7 @@ prd_index:
       resolve conflicts between --name and config. Validation handles
       missing files and malformed JSON. Uses encoding/json from the Go
       standard library.
-    path: docs/specs/product-requirements/prd003-config.yaml
+    path: docs/specs/software-requirements/srd003-config.yaml
 
 use_case_index:
   - id: rel02.0-uc001-build-hello-world
@@ -115,45 +115,45 @@ test_suite_index:
     test_case_count: 8
     path: docs/specs/test-suites/test-rel04.0.yaml
 
-prd_to_use_case_mapping:
+srd_to_use_case_mapping:
   - use_case: rel02.0-uc001-build-hello-world
-    prd: prd001-hello-world-binary
+    srd: srd001-hello-world-binary
     why_required: |
-      The use case exercises all PRD requirements by building and running the
+      The use case exercises all SRD requirements by building and running the
       binary, verifying output, exit code, and file structure.
     coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3
   - use_case: rel03.0-uc002-greeting-and-version
-    prd: prd002-cli-enhancements
+    srd: srd002-cli-enhancements
     why_required: |
       Validates the stdout-producing flag paths: --version prints the Version
       constant, --name personalizes the greeting, and the default greeting is
       preserved when no flag is provided.
     coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3
   - use_case: rel03.0-uc003-help-and-errors
-    prd: prd002-cli-enhancements
+    srd: srd002-cli-enhancements
     why_required: |
       Validates the stderr-producing flag paths: --help prints usage
       information, and unknown flags produce an error with exit code 1.
     coverage: R3.1, R3.2, R4.1, R4.2, R4.3
 
   - use_case: rel04.0-uc004-config-loading
-    prd: prd003-config
+    srd: srd003-config
     why_required: |
       Validates config file loading, config-driven behavior (name, template,
       format), and flag precedence when --name or --version is combined with
       --config.
     coverage: R1.1, R1.2, R1.3, R2.1, R2.2, R2.3, R3.1, R3.2, R3.3
   - use_case: rel04.0-uc005-config-validation
-    prd: prd003-config
+    srd: srd003-config
     why_required: |
       Validates error handling for missing config files, malformed JSON, and
       unknown fields in the config file.
     coverage: R4.1, R4.2, R4.3
 
 coverage_gaps: |
-  No coverage gaps. All PRD requirements are covered: prd001 by UC001,
-  prd002 R1-R2 by UC002, prd002 R3-R4 by UC003, prd003 R1-R3 by UC004,
-  prd003 R4 by UC005.
+  No coverage gaps. All SRD requirements are covered: srd001 by UC001,
+  srd002 R1-R2 by UC002, srd002 R3-R4 by UC003, srd003 R1-R3 by UC004,
+  srd003 R4 by UC005.
 
 references:
   - VISION.yaml

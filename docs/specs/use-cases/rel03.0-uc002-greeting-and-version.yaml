@@ -9,7 +9,7 @@ summary: |
   verify that flag parsing produces correct stdout output. The --version flag
   prints the Version constant. The --name flag personalizes the greeting.
   Running with no flags preserves the default "Hello, World!" behavior from
-  prd001. This use case exercises the stdout-producing flag paths.
+  srd001. This use case exercises the stdout-producing flag paths.
 
 actor: Developer or CI pipeline
 
@@ -38,12 +38,12 @@ touchpoints:
     text: |
       Binary component (cmd/sdd-hello-world/main.go) — exercises the flag
       parsing logic for --version and --name, and the default greeting path.
-      Implements prd002-cli-enhancements R1.1, R1.2, R1.3, R2.1, R2.2, R2.3.
+      Implements srd002-cli-enhancements R1.1, R1.2, R1.3, R2.1, R2.2, R2.3.
   - id: T2
     text: |
       Version file (cmd/sdd-hello-world/version.go) — the Version constant
       whose value is printed to stdout when --version is provided. Implements
-      prd002-cli-enhancements R1.1.
+      srd002-cli-enhancements R1.1.
 
 success_criteria:
   - id: S1

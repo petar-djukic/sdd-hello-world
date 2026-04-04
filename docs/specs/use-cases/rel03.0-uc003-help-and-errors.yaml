@@ -36,7 +36,7 @@ touchpoints:
     text: |
       Binary component (cmd/sdd-hello-world/main.go) — exercises the --help
       usage output and the error handling path for unknown flags. Implements
-      prd002-cli-enhancements R3.1, R3.2, R4.1, R4.2, R4.3.
+      srd002-cli-enhancements R3.1, R3.2, R4.1, R4.2, R4.3.
 
 success_criteria:
   - id: S1
