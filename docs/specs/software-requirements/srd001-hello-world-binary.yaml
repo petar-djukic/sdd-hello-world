@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Petar Djukic. All rights reserved.
 # SPDX-License-Identifier: MIT
 
-id: prd001-hello-world-binary
+id: srd001-hello-world-binary
 title: Hello World Binary
 
 problem: |
@@ -9,7 +9,7 @@ problem: |
   measure and stitch pipeline against. The binary must be simple enough that a
   single generation cycle can produce it from specifications alone, yet
   complete enough to validate that the pipeline creates compilable, runnable
-  Go code. Without a PRD that specifies the binary's requirements, the measure
+  Go code. Without an SRD that specifies the binary's requirements, the measure
   agent has no anchored requirements to propose and proposes zero tasks.
 
 goals:

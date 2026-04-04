@@ -143,7 +143,7 @@ project_structure: |
   magefiles/: Build tooling. Flat directory (mage constraint). One file per
   concern.
 
-  Align package structure to PRD component structure. Each major component maps
+  Align package structure to SRD component structure. Each major component maps
   to one package. Avoid package names like util, common, helpers. Name packages
   by domain: storage, auth, config.
 
@@ -247,7 +247,7 @@ sections:
     content: |
       cmd/ for entry points, internal/ for private implementation, pkg/ for
       public shared types, tests/ for integration tests, magefiles/ for build
-      tooling. Align package structure to PRD component structure.
+      tooling. Align package structure to SRD component structure.
   - tag: standard_packages
     title: Standard Packages
     content: |

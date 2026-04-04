@@ -39,7 +39,7 @@ touchpoints:
     text: |
       Binary component (cmd/sdd-hello-world/main.go) — exercises the config
       file error handling for missing files, malformed JSON, and unknown
-      fields. Implements prd003-config R4.1, R4.2, R4.3.
+      fields. Implements srd003-config R4.1, R4.2, R4.3.
 
 success_criteria:
   - id: S1

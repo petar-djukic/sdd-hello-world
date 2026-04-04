@@ -102,7 +102,7 @@ design_decisions:
   - id: 2
     title: Specification-driven code generation
     decision: |
-      We include a PRD (prd001-hello-world-binary), a use case, and a test suite
+      We include an SRD (srd001-hello-world-binary), a use case, and a test suite
       that specify the binary's requirements. The cobbler-scaffold measure phase
       reads these specifications and proposes implementation tasks when the Go
       source files are absent. This makes the project a reliable, reproducible
@@ -110,7 +110,7 @@ design_decisions:
     benefits:
       - The measure agent has anchored requirements to propose tasks against
       - Each generation cycle can produce the binary from specifications alone
-      - The test suite validates that generated code meets the PRD requirements
+      - The test suite validates that generated code meets the SRD requirements
     alternatives_rejected:
       - "No specs: measure agent finds nothing to propose when source is absent"
 
@@ -148,9 +148,9 @@ implementation_status:
     - done: Configuration (configuration.yaml)
     - done: Documentation (VISION.yaml, ARCHITECTURE.yaml, road-map.yaml, constitutions)
     - done: Tagged and published as Go module
-    - done: PRD, use case, and test suite for hello world binary (rel02.0)
-    - done: PRD, use cases, and test suite for CLI enhancements (rel03.0)
-    - done: PRD, use cases, and test suite for config file support (rel04.0)
+    - done: SRD, use case, and test suite for hello world binary (rel02.0)
+    - done: SRD, use cases, and test suite for CLI enhancements (rel03.0)
+    - done: SRD, use cases, and test suite for config file support (rel04.0)
     - pending: Go binary (cmd/sdd-hello-world/main.go, cmd/sdd-hello-world/version.go)
 
 related_documents:
@@ -158,13 +158,13 @@ related_documents:
     purpose: Project purpose, scope, and success criteria
   - doc: docs/road-map.yaml
     purpose: Release schedule and phase status
-  - doc: docs/specs/product-requirements/prd001-hello-world-binary.yaml
+  - doc: docs/specs/software-requirements/srd001-hello-world-binary.yaml
     purpose: Binary requirements (file structure, runtime behavior)
   - doc: docs/specs/use-cases/rel02.0-uc001-build-hello-world.yaml
     purpose: Build and run use case for release 02.0
   - doc: docs/specs/test-suites/test-rel02.0.yaml
     purpose: Test suite validating the binary use case
-  - doc: docs/specs/product-requirements/prd002-cli-enhancements.yaml
+  - doc: docs/specs/software-requirements/srd002-cli-enhancements.yaml
     purpose: CLI flag requirements (version, name, help, error handling)
   - doc: docs/specs/use-cases/rel03.0-uc002-greeting-and-version.yaml
     purpose: Greeting and version flag use case for release 03.0 (R1, R2)
@@ -172,7 +172,7 @@ related_documents:
     purpose: Help and error handling use case for release 03.0 (R3, R4)
   - doc: docs/specs/test-suites/test-rel03.0.yaml
     purpose: Test suite validating CLI enhancement use cases
-  - doc: docs/specs/product-requirements/prd003-config.yaml
+  - doc: docs/specs/software-requirements/srd003-config.yaml
     purpose: Config file requirements (loading, behavior, precedence, validation)
   - doc: docs/specs/use-cases/rel04.0-uc004-config-loading.yaml
     purpose: Config loading and behavior use case for release 04.0 (R1, R2, R3)

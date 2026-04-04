@@ -16,7 +16,7 @@ project:
         docs/ARCHITECTURE.yaml
         docs/SPECIFICATIONS.yaml
         docs/road-map.yaml
-        docs/specs/product-requirements/prd*.yaml
+        docs/specs/software-requirements/srd*.yaml
         docs/specs/use-cases/rel*.yaml
         docs/specs/test-suites/test-rel*.yaml
         docs/specs/dependency-map.yaml

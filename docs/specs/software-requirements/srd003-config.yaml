@@ -1,15 +1,15 @@
 # Copyright (c) 2026 Petar Djukic. All rights reserved.
 # SPDX-License-Identifier: MIT
 
-id: prd003-config
+id: srd003-config
 title: Configuration File Support
 
 problem: |
   The hello world binary accepts flags for individual settings but has no way
-  to load multiple settings from a file. With only two PRDs and 17 R-items,
+  to load multiple settings from a file. With only two SRDs and 17 R-items,
   the cobbler-scaffold generation pipeline completes in two to three stitch
   cycles, which is too few to exercise cross-batch duplicate detection and
-  partial UC completion gating. We need a third PRD with enough R-items to
+  partial UC completion gating. We need a third SRD with enough R-items to
   require three or more stitch tasks, exercising the requirement tracking
   pipeline at scale. A JSON configuration file adds 12 R-items across four
   groups while preserving the zero-dependency constraint (encoding/json is
@@ -33,7 +33,7 @@ requirements:
     items:
       - R1.1: The binary must accept a --config flag that takes a file path argument.
       - R1.2: The binary must parse the config file as JSON with three optional string fields named "name", "template", and "format".
-      - R1.3: When --config is not provided, no config file is loaded and all behavior defaults apply as specified in prd001 and prd002.
+      - R1.3: When --config is not provided, no config file is loaded and all behavior defaults apply as specified in srd001 and srd002.
   R2:
     title: Config-driven behavior
     items:

@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Petar Djukic. All rights reserved.
 # SPDX-License-Identifier: MIT
 
-id: prd002-cli-enhancements
+id: srd002-cli-enhancements
 title: CLI Enhancements
 
 problem: |
@@ -10,7 +10,7 @@ problem: |
   pipeline completes in a single cycle. We need additional requirements that
   exercise multi-cycle generation: multiple use cases within a release, flag
   parsing, error handling, and version reporting. These requirements must use
-  only the Go standard library so the zero-dependency constraint from prd001
+  only the Go standard library so the zero-dependency constraint from srd001
   is preserved.
 
 goals:
@@ -37,7 +37,7 @@ requirements:
     items:
       - R2.1: The binary must accept a --name flag that takes a string argument.
       - R2.2: When --name is provided with a value, the binary must print "Hello, <value>!" followed by a newline to stdout, where <value> is the flag argument.
-      - R2.3: When --name is not provided, the binary must print "Hello, World!" followed by a newline to stdout (preserving prd001 R2.1 default behavior).
+      - R2.3: When --name is not provided, the binary must print "Hello, World!" followed by a newline to stdout (preserving srd001 R2.1 default behavior).
   R3:
     title: Help flag
     items:

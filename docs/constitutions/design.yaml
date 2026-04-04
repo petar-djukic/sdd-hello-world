@@ -1,7 +1,7 @@
 # Design Constitution
 #
 # This constitution governs the design/architecting phase: creating VISION,
-# ARCHITECTURE, PRDs, use cases, test suites, and other documentation. It is
+# ARCHITECTURE, SRDs, use cases, test suites, and other documentation. It is
 # scaffolded into consuming projects so Claude knows how to write specs that
 # match the project's documentation standards.
 
@@ -10,13 +10,13 @@ articles:
     title: Specification-driven development
     rule: |
       Specifications are the source of truth. Code serves specifications, not
-      the other way around. No implementation code before the PRD and use case
+      the other way around. No implementation code before the SRD and use case
       exist. No implementation issue before a test suite exists for its use case.
 
   - id: D2
     title: YAML-first for structured docs
     rule: |
-      Use YAML for structured documents (VISION, ARCHITECTURE, PRDs, use cases,
+      Use YAML for structured documents (VISION, ARCHITECTURE, SRDs, use cases,
       test suites). Use markdown for prose-heavy guidelines and specifications
       summaries. YAML is machine-readable by design.
 
@@ -30,9 +30,9 @@ articles:
   - id: D4
     title: Traceability
     rule: |
-      Every PRD traces to VISION and ARCHITECTURE. Every use case traces to
-      PRDs (via touchpoints). Every test suite traces to use cases (via the
-      traces field). Code traces to PRDs via commit messages and comments.
+      Every SRD traces to VISION and ARCHITECTURE. Every use case traces to
+      SRDs (via touchpoints). Every test suite traces to use cases (via the
+      traces field). Code traces to SRDs via commit messages and comments.
 
   - id: D5
     title: Roadmap-driven releases
@@ -97,7 +97,7 @@ document_types:
     purpose: |
       States what the project is, why it exists, how success is measured, and
       what it is not. Orients stakeholders, new contributors, and downstream
-      docs (ARCHITECTURE, PRDs).
+      docs (ARCHITECTURE, SRDs).
 
   architecture:
     location: docs/ARCHITECTURE.yaml
@@ -116,11 +116,11 @@ document_types:
     purpose: |
       Describes how the system is built: components, interfaces, protocols,
       data flow, design decisions. Bridge between vision (what and why) and
-      PRDs (numbered requirements).
+      SRDs (numbered requirements).
 
-  prd:
-    location: "docs/specs/product-requirements/prd[NNN]-[feature-name].yaml"
-    format_rule: prd-format
+  srd:
+    location: "docs/specs/software-requirements/srd[NNN]-[feature-name].yaml"
+    format_rule: srd-format
     required_fields:
       - id
       - title
@@ -134,7 +134,7 @@ document_types:
       requirement_groups: "R1, R2, R3, ..."
       requirement_items: "R1.1, R1.2, R2.1, ..."
     purpose: |
-      Defines product requirements with numbered goals and requirements. Each
+      Defines software requirements with numbered goals and requirements. Each
       requirement starts with "must" or "must not" or a concrete verb. No scope
       creep - non_goals define explicit boundaries.
 
@@ -188,7 +188,7 @@ document_types:
       - references
     purpose: |
       Documents conventions, practices, and patterns above the code and
-      architecture. Not PRDs (no numbered requirements). Not architecture (no
+      architecture. Not SRDs (no numbered requirements). Not architecture (no
       component descriptions).
 
   specification:
@@ -199,16 +199,16 @@ document_types:
       - title
       - overview (multi-line text)
       - "roadmap_summary (list: version, name, use_cases_done, use_cases_total, status)"
-      - "prd_index (list: id, title, summary, path)"
+      - "srd_index (list: id, title, summary, path)"
       - "use_case_index (list: id, title, release, status, test_suite, path)"
       - "test_suite_index (list: id, title, traces, test_case_count, path)"
-      - "prd_to_use_case_mapping (list: use_case, prd, why_required, coverage)"
+      - "srd_to_use_case_mapping (list: use_case, srd, why_required, coverage)"
       - coverage_gaps (list or multi-line text)
     optional_fields:
       - traceability_diagram (Mermaid as multi-line string)
       - references
     purpose: |
-      Human-readable summary tying together PRDs, use cases, test suites, and
+      Human-readable summary tying together SRDs, use cases, test suites, and
       roadmap into one navigable page. Does not duplicate content; summarizes
       and shows relationships. Regenerate when any artifact changes.
 
@@ -220,7 +220,7 @@ document_types:
       (major.minor). Minor releases validate completed major releases.
 
 naming_conventions:
-  prd: "prd[NNN]-[feature-name].yaml (e.g., prd001-hello-world-binary.yaml)"
+  srd: "srd[NNN]-[feature-name].yaml (e.g., srd001-hello-world-binary.yaml)"
   use_case: "rel[NN].[N]-uc[NNN]-[short-name].yaml (e.g., rel02.0-uc001-build-hello-world.yaml)"
   test_suite: "test-[use-case-id].yaml (e.g., test-rel02.0-uc001-build-hello-world.yaml)"
   engineering_guideline: "eng[NN]-[short-name].yaml (e.g., eng01-git-integration.yaml)"
@@ -238,10 +238,10 @@ writing_guidelines:
 traceability_model:
   vision: Goals and boundaries
   architecture: Components and interfaces (implements vision)
-  prds: Numbered requirements (architecture points to PRDs for detail)
+  srds: Numbered requirements (architecture points to SRDs for detail)
   use_cases: Tracer bullets (exercise architecture components via touchpoints)
   test_suites: Validation (validate use case success criteria)
-  code: Implementation (traces to PRDs via commit messages)
+  code: Implementation (traces to SRDs via commit messages)
 
 completeness_checklists:
   vision:
@@ -257,13 +257,13 @@ completeness_checklists:
   architecture:
     - id matches project name
     - overview.summary states what the system does and core insight
-    - interfaces list data structures, operations, announcements; link to PRD for full spec
-    - components list each major component with responsibility; link to PRD or use case
+    - interfaces list data structures, operations, announcements; link to SRD for full spec
+    - components list each major component with responsibility; link to SRD or use case
     - design_decisions are numbered with decision statement and benefits
     - project_structure shows directory paths and roles
     - File saved as ARCHITECTURE.yaml in docs/
 
-  prd:
+  srd:
     - id matches filename without extension
     - problem states what we solve and why it matters
     - goals are numbered (G1, G2, ...) and measurable
@@ -271,7 +271,7 @@ completeness_checklists:
     - Each requirement is specific and actionable
     - non_goals define what is out of scope
     - acceptance_criteria are checkable without ambiguity
-    - File saved as prd[NNN]-[feature-name].yaml
+    - File saved as srd[NNN]-[feature-name].yaml
 
   use_case:
     - id matches filename without extension
@@ -285,7 +285,7 @@ completeness_checklists:
 
   test_suite:
     - id matches filename
-    - traces lists at least one use case or PRD requirement
+    - traces lists at least one use case or SRD requirement
     - preconditions describe shared starting state
     - Each test case has name, inputs, expected outputs
     - Inputs use real commands and data
@@ -309,14 +309,14 @@ sections:
   - tag: document_types
     title: Document Types
     content: |
-      Seven document types are defined: vision, architecture, PRD, use case,
+      Seven document types are defined: vision, architecture, SRD, use case,
       test suite, engineering guideline, and specification. Each has a canonical
       location, format rule, required fields, and optional fields.
   - tag: naming_conventions
     title: Naming Conventions
     content: |
       File names follow strict patterns per document type (e.g.,
-      prd[NNN]-[feature].yaml, rel[NN].[N]-uc[NNN]-[name].yaml). Use lowercase
+      srd[NNN]-[feature].yaml, rel[NN].[N]-uc[NNN]-[name].yaml). Use lowercase
       kebab-case throughout.
   - tag: writing_guidelines
     title: Writing Guidelines
@@ -328,7 +328,7 @@ sections:
     title: Traceability Model
     content: |
       Every artifact traces through the chain: vision goals → architecture
-      components → PRD requirements → use case tracer bullets → test suite
+      components → SRD requirements → use case tracer bullets → test suite
       validation → code implementation.
   - tag: completeness_checklists
     title: Completeness Checklists

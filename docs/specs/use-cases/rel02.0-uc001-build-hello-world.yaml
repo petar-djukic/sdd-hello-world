@@ -32,17 +32,17 @@ touchpoints:
   - id: T1
     text: |
       Binary component (cmd/sdd-hello-world/main.go) — exercises the main
-      function that prints the greeting. Implements prd001-hello-world-binary
+      function that prints the greeting. Implements srd001-hello-world-binary
       R1.1, R2.1, R2.2, R2.3.
   - id: T2
     text: |
       Version file (cmd/sdd-hello-world/version.go) — confirms the version
-      constant compiles alongside main.go. Implements prd001-hello-world-binary
+      constant compiles alongside main.go. Implements srd001-hello-world-binary
       R1.2.
   - id: T3
     text: |
       Go module (go.mod) — validates that the module builds with zero external
-      dependencies. Implements prd001-hello-world-binary R1.3.
+      dependencies. Implements srd001-hello-world-binary R1.3.
 
 success_criteria:
   - id: S1
