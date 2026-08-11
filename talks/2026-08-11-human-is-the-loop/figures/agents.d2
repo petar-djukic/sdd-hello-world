@@ -1,0 +1,49 @@
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+direction: right
+
+you: "YOU\n\n/make-work\n/gh-issue-push" {
+  style.fill: "#fef3c7"
+  style.stroke: "#d97706"
+  style.bold: true
+}
+
+github: "GitHub\n\nissues = queue + state\nspecs in the repo\nPRs + checks" {
+  shape: cylinder
+  style.fill: "#dcfce7"
+  style.stroke: "#16a34a"
+}
+
+a1: "Claude Code\nworktree A\n\n/gh-issue-pop 12\n/do-work" {
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+a2: "Claude Code\nworktree B\n\n/gh-issue-pop 14\n/do-work" {
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+a3: "opencode\nworktree C\n\nresumes /do-work" {
+  style.fill: "#ede9fe"
+  style.stroke: "#7c3aed"
+}
+
+you -> github: "push issues"
+github -> a1: "pop"
+github -> a2: "pop"
+github -> a3: "pop"
+a1 -> github: "PR" {style.stroke-dash: 3}
+a2 -> github: "PR" {style.stroke-dash: 3}
+a3 -> github: "PR" {style.stroke-dash: 3}
+github -> you: "you review + merge" {style.stroke-dash: 3}
+
+note: |md
+  every session reads the same issues and the same specs.
+  the coordination point is GitHub, not the chat.
+| {
+  near: bottom-center
+  style.font-size: 13
+}

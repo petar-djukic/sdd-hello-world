@@ -1,0 +1,87 @@
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+direction: down
+
+
+human1: "human\ndecides to plan" {
+  shape: circle
+  style.fill: "#bbf7d0"
+  style.stroke: "#16a34a"
+  style.stroke-width: 2
+  width: 110
+  height: 110
+}
+
+makework: "/make-work\nread specs → propose issues" {
+  shape: rectangle
+  style.fill: "#ffffff"
+  style.stroke: "#64748b"
+}
+
+human2: "human\napproves plan" {
+  shape: diamond
+  style.fill: "#bbf7d0"
+  style.stroke: "#16a34a"
+  style.stroke-width: 2
+  width: 130
+  height: 100
+}
+
+push: "/gh-issue-push\nsearch ripple effects → create issue" {
+  shape: rectangle
+  style.fill: "#ffffff"
+  style.stroke: "#64748b"
+}
+
+human3: "human\npicks an issue" {
+  shape: circle
+  style.fill: "#bbf7d0"
+  style.stroke: "#16a34a"
+  style.stroke-width: 2
+  width: 110
+  height: 110
+}
+
+pop: "/gh-issue-pop\ndecompose → worktree → branch" {
+  shape: rectangle
+  style.fill: "#ffffff"
+  style.stroke: "#64748b"
+}
+
+human4: "human\napproves decomposition" {
+  shape: diamond
+  style.fill: "#bbf7d0"
+  style.stroke: "#16a34a"
+  style.stroke-width: 2
+  width: 145
+  height: 100
+}
+
+dowork: "/do-work\nimplement → validate → commit" {
+  shape: rectangle
+  style.fill: "#ffffff"
+  style.stroke: "#64748b"
+}
+
+human5: "human\nreviews and merges" {
+  shape: diamond
+  style.fill: "#bbf7d0"
+  style.stroke: "#16a34a"
+  style.stroke-width: 2
+  width: 140
+  height: 100
+}
+
+human1 -> makework
+makework -> human2
+human2 -> push
+push -> human3
+human3 -> pop
+pop -> human4
+human4 -> dowork
+dowork -> human5
+

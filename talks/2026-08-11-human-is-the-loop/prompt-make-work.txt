@@ -1,0 +1,18 @@
+$ cd ~/GITHUB/sdd-hello-world && claude
+
+> /make-work
+  scope it to release 02.0: one epic, and two issues under it,
+  one per source file. Nothing else.
+
+    reads docs/VISION.yaml, road-map.yaml, constitutions/
+    verifies the tracker:  gh issue list --state all
+    finds no cmd/ tree -- rel02.0 really is pending
+    proposes:  epic + main.go issue + version.go issue
+
+> approve the plan
+
+> /gh-issue-push
+
+    one self-contained issue per task:
+    Required Reading, Files to Create/Modify,
+    Requirements, Acceptance Criteria, estimated LOC

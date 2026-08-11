@@ -1,0 +1,63 @@
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+grid-columns: 4
+grid-gap: 60
+
+plan: "/make-work\n\nread specs,\npropose batch" {
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+gate1: "YOU\napprove\nthe plan" {
+  shape: diamond
+  style.fill: "#fef3c7"
+  style.stroke: "#d97706"
+  style.bold: true
+}
+push: "/gh-issue-push\n\nwrite task as\nself-contained issue" {
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+github: "GitHub\n\nissues = the queue\n+ the memory" {
+  shape: cylinder
+  style.fill: "#dcfce7"
+  style.stroke: "#16a34a"
+}
+gate2: "YOU\nreview\nthe PR" {
+  shape: diamond
+  style.fill: "#fef3c7"
+  style.stroke: "#d97706"
+  style.bold: true
+}
+work: "/do-work\n\nimplement, validate,\nopen the PR" {
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+pop: "/gh-issue-pop\n\ndecompose into\nsub-issues, worktree" {
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+next: "next session\nstarts cold" {
+  style.fill: "#f3f4f6"
+  style.stroke: "#6b7280"
+  style.stroke-dash: 3
+}
+
+plan -> gate1
+gate1 -> push
+push -> github
+github -> pop
+pop -> work
+work -> gate2
+gate2 -> github: "merge\ncloses issue" {
+  style.stroke-dash: 3
+}
+next -> plan: {
+  style.stroke-dash: 3
+}
+github -> next: {
+  style.stroke-dash: 3
+}

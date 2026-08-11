@@ -1,0 +1,16 @@
+> /gh-issue-show
+
+    lists the open issues -- the queue make-work just filled
+
+> /gh-issue-pop 85        # the epic
+
+    decomposes #85 into sub-issues #86, #87
+    worktree ../gh-85-hello-world-binary + branch of the same name
+
+$ cd ../gh-85-hello-world-binary && claude
+
+> /do-work
+
+    implements #86, validates: go build, run, exit code
+    commits "Closes #86"; run again for #87
+    PR opens when every sub-issue is done

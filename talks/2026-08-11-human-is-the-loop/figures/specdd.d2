@@ -1,0 +1,52 @@
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+direction: right
+
+docs: "docs/ (in the repo)" {
+  style.fill: "#dcfce7"
+  style.stroke: "#16a34a"
+  vision: "VISION.yaml\ngoals + boundaries" {
+    style.fill: "#f0fdf4"
+  }
+  arch: "ARCHITECTURE.yaml\ncomponents + design" {
+    style.fill: "#f0fdf4"
+  }
+  roadmap: "road-map.yaml\nreleases + use cases" {
+    style.fill: "#f0fdf4"
+  }
+  constitution: "constitutions/\nformat rules the\nagent must obey" {
+    style.fill: "#f0fdf4"
+  }
+}
+
+plan: "/make-work\nreads all of it,\nverifies tracker claims" {
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+
+issue: "each issue carries\nits slice of the spec:\nfiles, criteria, contracts" {
+  style.fill: "#eff6ff"
+  style.stroke: "#2563eb"
+}
+
+cold: "a session that knows\nNOTHING about this one\nexecutes it correctly" {
+  style.fill: "#fef3c7"
+  style.stroke: "#d97706"
+  style.bold: true
+}
+
+docs -> plan
+plan -> issue
+issue -> cold
+
+note: |md
+  this is why the loop works: the spec is in files,
+  not in anyone's head and not in a chat scrollback.
+| {
+  near: bottom-center
+  style.font-size: 13
+}

@@ -1,0 +1,34 @@
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+grid-columns: 2
+grid-gap: 90
+
+cmdfile: ".claude/commands/gh-issue-push.md\n\na saved prompt, nothing more" {
+  shape: page
+  style.fill: "#dbeafe"
+  style.stroke: "#2563eb"
+}
+
+model: "the model drafts it\n\nwrites a prompt\nfor its future self" {
+  style.fill: "#fef3c7"
+  style.stroke: "#d97706"
+}
+
+issue: "the GitHub issue\n\nRequired Reading\nFiles to Modify\nAcceptance Criteria" {
+  style.fill: "#dcfce7"
+  style.stroke: "#16a34a"
+}
+
+session: "next session starts cold\n\nreads this, and nothing else" {
+  style.fill: "#f3f4f6"
+  style.stroke: "#6b7280"
+  style.stroke-dash: 3
+}
+
+cmdfile -> model
+model -> issue
+issue -> session

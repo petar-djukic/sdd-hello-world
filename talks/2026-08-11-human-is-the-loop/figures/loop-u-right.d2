@@ -1,0 +1,41 @@
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+direction: up
+
+pop: "/gh-issue-pop\ndecompose → worktree → branch" {
+  shape: rectangle
+  style.fill: "#ffffff"
+  style.stroke: "#64748b"
+}
+
+human4: "human\napproves decomposition" {
+  shape: diamond
+  style.fill: "#bbf7d0"
+  style.stroke: "#16a34a"
+  style.stroke-width: 2
+  width: 145
+  height: 100
+}
+
+dowork: "/do-work\nimplement → validate → commit" {
+  shape: rectangle
+  style.fill: "#ffffff"
+  style.stroke: "#64748b"
+}
+
+human5: "human\nreviews and merges" {
+  shape: diamond
+  style.fill: "#bbf7d0"
+  style.stroke: "#16a34a"
+  style.stroke-width: 2
+  width: 140
+  height: 100
+}
+
+pop -> human4
+human4 -> dowork
+dowork -> human5

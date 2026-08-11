@@ -1,0 +1,16 @@
+$ cd ../gh-85-hello-world-binary      # the same worktree
+
+$ opencode
+
+> /gh-issue-show
+
+    a different tool, reading the same board:
+    #85 epic, #86 closed, #87 still open
+
+> /do-work
+
+    picks up #87 and keeps going
+    same command file, different tool
+
+    nothing lived in Claude Code:
+    the issue body + the repository is the whole state

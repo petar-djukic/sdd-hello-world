@@ -1,0 +1,15 @@
+> /gh-issue-show
+
+    the standing work orders, still open after every run:
+    #77 upgrade cobbler-scaffold, #89 reset the demo
+
+> /gh-issue-pop 89        # Recurring: Reset demo to clean slate
+
+    reads the contract: revert the demo, restore the road map
+
+> /do-work
+
+    resets main to the baseline, prunes worktrees and branches
+    closes #89 -- and the recurrence rule opens the next instance
+
+    Previous Runs: every rehearsal of this talk is in the log

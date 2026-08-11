@@ -1,0 +1,134 @@
+# The Human Is the Loop
+Planning and Shipping Code with Claude Code and GitHub
+11 Aug 2026
+
+Petar Djukic
+meshintelligence.substack.com
+
+## Overview
+
+- Everyone says "loop engineering": replace yourself as the person who prompts the agent
+- I'm responsible for what ships, so I stay in control
+- Loop engineering is a set of tools and a set of skills — the four skills I show you live today:
+  - **[getting the model to write its own prompts](https://meshintelligence.substack.com/p/how-to-loop-engineering)** — the push command
+  - **[long-term memory management](https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory)** — GitHub as the agent's memory
+  - **[giving every task its own workspace](https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding)** — worktrees and the pop command
+  - **[giving the agent temporal agency](https://meshintelligence.substack.com/p/how-to-use-github-to-give-a-coding)** — recurring issues
+- The talk summarizes [my blog](https://meshintelligence.substack.com) — every skill has a write-up
+
+.html qr-overview.html
+
+: Set expectations: live demo on a real repo, things may flake, that is part of the point. The tools — four commands, GitHub, markdown files, no framework — get named on the loop slide, so say that out loud here rather than reading it. Each skill maps to one demo beat and one article.
+
+## Vibe coding vs loop engineering
+
+.html chat-vs-loop.html
+
+.link https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory more details in How to Use GitHub as Long-Term Memory
+
+: Say the receipt out loud, don't put it on the slide: I removed myself, ran the pipeline 46 times, and watched all four jobs stop happening — that run is what the linked article is about. Cherny: "my job is to write loops." Osmani: "replacing yourself as the person who prompts the agent." The four jobs are what the replaced person was doing all day. The coordination row's tag (breaking down the work) is a passing mention, not a talk section. Worktrees is the fourth skill — a workspace per task is what lets several loops run at once. The rest of the talk is one row at a time.
+
+## The loop
+
+.html loop-pane.html
+
+.link https://meshintelligence.substack.com/p/how-to-loop-engineering more details in How to Loop Engineering
+.link https://github.com/petar-djukic/coding-skills/tree/main/.claude the commands themselves: github.com/petar-djukic/coding-skills
+
+: The whole talk in one picture. Walk the loop top to bottom: every white box is a command, every green node is the human. The skills that follow are this loop, one beat at a time.
+
+## Skill 1: Getting the model to write its own prompts
+
+.image figures/prompt-writing.svg 180 _
+
+- The commands are saved prompts — markdown files in .claude/commands/
+- Every issue in my repositories was drafted by a model
+- **Demo:** /make-work proposes the batch; I approve; /gh-issue-push files it
+- **→ switch to GitHub** and read what the model wrote for its future self:
+
+.link https://github.com/petar-djukic/sdd-hello-world/issues today's demo repo: petar-djukic/sdd-hello-world
+.link https://github.com/Nokia-Bell-Labs/declarative-agents/issues and at scale: Nokia-Bell-Labs/declarative-agents, 1,500+ issues
+
+: Passing mention, not a section: the specs live in files, not scrollback — breaking the work down for the model is its own skill, write-up on the take-home slide. Gate 1 on screen: nothing exists until the human approves the plan. Show the command file itself briefly — just markdown. The issue is a prompt the model wrote for its future self.
+
+## Skill 1, live: plan a backlog on the hello-world repo
+
+.code prompt-make-work.txt
+
+- Two commands, one gate: nothing exists until the plan is approved
+
+: make-work takes no arguments — the scope line is what keeps it to an epic and two issues instead of the whole roadmap. Full loop verified 2026-08-10: epic #85 → PR #88 merged → reset #84 reverted it.
+
+## Skill 2: Long-term memory management
+
+.image figures/agents.svg 240 _
+
+- The executing session reads the issue body and the repository, and nothing else
+- Nothing from the planning conversation survives, and nothing needs to
+- The shape is forty years old: a blackboard — agents are the specialists, GitHub is the board, the control component is you (Hayes-Roth 1985)
+- **Demo:** /do-work — implement, validate, PR opens. The agent never merges its own PR; I review and merge. Done means closed.
+
+: Gate 2 on screen: validation is the contract. The state outlives the tool — the opencode slide after Skill 3 proves it. Fallback: narrate from a rehearsal run.
+
+## Skill 2, live: pop the issue, do the work
+
+.code prompt-pop-work.txt
+
+- The pop decomposes and isolates; the work session starts cold and reads the board
+
+: The worktree the pop creates is the next slide's subject — point at the cd line when you get there. First rehearsal produced PR #83 (closed by reset); current epic is #85.
+
+## Skill 3: Giving every task its own workspace
+
+.image figures/article-worktrees-layout.svg 260 _
+
+- A worktree is born when the task starts and dies when the PR merges
+- Disposable workspaces mean parallel agents, safe breakage, and your checkout stays yours
+- **Demo:** remote branches and sub-issue progress on GitHub — then `git worktree list` in the terminal
+
+.link https://github.com/petar-djukic/sdd-hello-world/branches remote branches: sdd-hello-world/branches
+
+## Skill 3, live: opencode picks up the work
+
+.code prompt-opencode.txt
+
+- The tool is disposable; the loop is not
+
+: The riskiest beat — rehearse it first. Fallback: narrate the command file and the GitHub state; everything the tool needs is there.
+
+## Skill 4: Giving the agent temporal agency
+
+.image figures/article-recurring-loop.svg 220 _
+
+- A work order that outlives its completion: closing the issue creates the next instance
+- The upgrade issue has tracked this repo's tooling since March — eight runs in its log
+- Nobody remembers to do this chore; the issue remembers for you
+- **Demo:** close the upgrade issue, watch the next instance open with today's line in Previous Runs
+
+.link https://github.com/petar-djukic/sdd-hello-world/issues the recurring issue: sdd-hello-world/issues
+
+## Skill 4, live: reset the demo with a recurring issue
+
+.code prompt-reset.txt
+
+- The reset is itself a work order — closing it schedules the next one
+
+: Issue #89 — reset has run twice (#79, #84), both in its Previous Runs log. Every rehearsal appends a Previous Runs line — by talk day the issue demonstrates the pattern with real history.
+
+## Take it home: every skill has a write-up
+
+- The model does the work. You do the thinking. The commands are markdown files — copy them into your own repo.
+
+.link https://meshintelligence.substack.com/p/how-to-loop-engineering How to Loop Engineering
+.link https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory How to Use GitHub as Long-Term Memory for Coding Agents
+.link https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding How to Use Git Worktrees with Coding Agents
+.link https://meshintelligence.substack.com/p/how-to-use-github-to-give-a-coding How to Use GitHub to Give a Coding Agent Recurring Work
+.link https://meshintelligence.substack.com/p/how-to-build-a-writing-pipeline How to Build a Writing Pipeline
+.link https://meshintelligence.substack.com/p/how-to-stay-on-track-with-opus-5 How to Stay on Track with Opus 5
+.link https://github.com/petar-djukic/sdd-hello-world The demo repo: github.com/petar-djukic/sdd-hello-world
+
+.html qr-takehome.html
+
+- Questions — and if you want to see any step again, the loop reruns cheap
+
+: Links are in demo order: prompts, memory, worktrees, recurring work. The last two are the skills mentioned in passing — breaking down the work, and debugging the model's beliefs.

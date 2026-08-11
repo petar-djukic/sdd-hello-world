@@ -1,0 +1,45 @@
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+grid-columns: 2
+grid-gap: 60
+
+issue: "Issue #12" {
+  style.fill: "#dcfce7"
+  style.stroke: "#16a34a"
+  anatomy: |md
+    title: what and why
+    body: files to touch,
+    acceptance criteria,
+    estimated LOC
+    sub-issues: progress
+  |
+}
+
+branch: "branch gh-12-healthz\n\nthe change collects here,\nisolated from main" {
+  style.fill: "#eff6ff"
+  style.stroke: "#2563eb"
+}
+
+pr: "Pull Request" {
+  style.fill: "#eff6ff"
+  style.stroke: "#2563eb"
+  contents: |md
+    the diff
+    checks (build + tests)
+    review comments
+  |
+}
+
+merge: "merge to main\n\ncloses #12" {
+  style.fill: "#fef3c7"
+  style.stroke: "#d97706"
+  style.bold: true
+}
+
+issue -> branch: "work starts"
+branch -> pr: "work done"
+pr -> merge: "review passes"
