@@ -17,7 +17,7 @@ releases:
 
   - version: "02.0"
     name: Hello world binary from specifications
-    status: pending
+    status: done
     description: |
       We implement the hello world binary from its SRD specification. The
       generation pipeline reads srd001-hello-world-binary and produces the Go
@@ -25,7 +25,7 @@ releases:
       code from specs in a clean repository.
     use_cases:
       - id: rel02.0-uc001-build-hello-world
-        status: pending
+        status: done
 
   - version: "03.0"
     name: CLI enhancements
