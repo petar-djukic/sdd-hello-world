@@ -21,6 +21,18 @@ No `present` on the machine:
 go install golang.org/x/tools/cmd/present@latest
 ```
 
+## Terminal in the browser
+
+The whole talk runs from one browser window — deck, terminal, and GitHub
+as tabs. The terminal tab is ttyd:
+
+```bash
+ttyd -W zsh
+```
+
+Open http://127.0.0.1:7681 (`-W` makes it writable). Run the demo commands
+there; alt-tab never leaves the browser.
+
 ## Pre-talk checklist
 
 1. `gh auth status` — logged in as petar-djukic.
@@ -29,8 +41,9 @@ go install golang.org/x/tools/cmd/present@latest
    reset instance). Anything else: run the reset first.
 4. Confirm the reset instance number on the Skill 4 live slide and in
    `prompt-reset.txt` matches the open reset issue.
-5. Pre-load browser tabs: this repo's issues page, the recurring upgrade
-   issue (#77), Nokia-Bell-Labs/declarative-agents/issues.
+5. Pre-load browser tabs: the deck (:3999), the ttyd terminal (:7681),
+   this repo's issues page, the recurring upgrade issue (#77), and
+   Nokia-Bell-Labs/declarative-agents/issues.
 
 ## What's here
 
