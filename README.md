@@ -1,13 +1,15 @@
 # sdd-hello-world
 
-A minimal specification-driven Go project, small enough to read on a
-projector and real enough to run a full agent loop against. It is the demo
-repository for the talk
+A working example of spec-driven development with a coding agent, small
+enough to read on a projector. Four slash commands drive the whole cycle in
+Claude Code or opencode: GitHub issues carry the memory between sessions,
+each task gets its own git worktree, and a pull request you review closes the
+loop. It is the demo repository for the talk
 [The Human Is the Loop](talks/2026-08-11-human-is-the-loop/), and the test
 fixture cobbler-scaffold scaffolds against in its end-to-end suite.
 
-The specifications come first. There is no `cmd/` tree at rest — the binary
-is what the loop generates from `docs/specs/` when you run the demo.
+The specifications come first. There is no `cmd/` tree at rest — the Go
+binary is what the agent generates from `docs/specs/` when you run the demo.
 
 ## Try the demo yourself
 
@@ -95,7 +97,7 @@ The beat-by-beat runbook, including the reset that returns the repository to
 a clean slate afterwards, is in
 [talks/2026-08-11-human-is-the-loop/DEMO-PLAN.md](talks/2026-08-11-human-is-the-loop/DEMO-PLAN.md).
 
-## Why the repository is built this way
+## Why spec-driven development needs a fixture like this
 
 Cobbler-scaffold's end-to-end tests need a stable, minimal Go project to
 scaffold against. Pointing them at a production SDD project couples test
