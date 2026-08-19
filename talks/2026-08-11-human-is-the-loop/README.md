@@ -1,7 +1,10 @@
 # The Human Is the Loop
 
 Slides and demo runbook for the 2026-08-11 Ottawa ML/AI meetup talk.
-The talk demos this repository live.
+The talk demos this repository live. The public talk page, with the
+write-up links, is at
+[petar-djukic.github.io/sdd-hello-world](https://petar-djukic.github.io/sdd-hello-world/)
+(served from the `gh-pages` branch).
 
 ## Serve the deck
 
