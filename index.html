@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Human Is the Loop — Planning and Shipping Code with Claude Code and GitHub</title>
-<meta name="description" content="A live-demo talk on loop engineering with coding agents: the model writes its own prompts, GitHub issues carry long-term memory, every task gets a git worktree, and recurring issues give the agent standing work. Ottawa ML/AI Meetup, August 11, 2026.">
+<meta name="description" content="A live-demo talk (with recording) on loop engineering with coding agents: the model writes its own prompts, GitHub issues carry long-term memory, every task gets a git worktree, and recurring issues give the agent standing work. Ottawa ML/AI Meetup, August 11, 2026.">
+<link rel="canonical" href="https://petar-djukic.github.io/sdd-hello-world/">
 <style>
   :root {
     --bg: #ffffff; --fg: #1a1a1a; --muted: #555; --rule: #e2e2e2;
@@ -25,6 +26,8 @@
   .venue { color: var(--muted); font-size: .92rem; margin: 0 0 1.6rem; }
   a { color: var(--link); }
   img.fig { max-width: 100%; height: auto; display: block; margin: 1rem auto; border-radius: 6px; padding: 8px; }
+  .looppair { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .looppair img { flex: 1 1 14rem; max-width: 17rem; margin: .5rem 0; }
   ul { padding-left: 1.2rem; }
   li { margin: .3rem 0; }
   .writeup { font-size: .95rem; color: var(--muted); }
@@ -37,7 +40,10 @@
 <main>
   <h1>The Human Is the Loop</h1>
   <p class="sub">Planning and shipping code with Claude Code and GitHub</p>
-  <p class="venue">Petar Djukic · Ottawa ML/AI Meetup · August 11, 2026</p>
+  <p class="venue">Petar Djukic ·
+  <a href="https://www.meetup.com/machine-learning-artificial-intelligence-ottawa/events/315615348/">Ottawa Machine Learning / AI Meetup</a> ·
+  August 11, 2026 ·
+  <a href="https://www.youtube.com/watch?v=KU_AsbMm6I0">watch the recording</a></p>
 
   <p>Everyone says "loop engineering": replace yourself as the person who prompts the
   agent. I am responsible for what ships, so I stay in control. This talk shows the four
@@ -45,8 +51,17 @@
   markdown files, no framework. Every skill has a write-up on
   <a href="https://meshintelligence.substack.com?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">Mesh Intelligence</a>.</p>
 
-  <h2>The loop</h2>
-  <img class="fig" src="figures/loop.svg" alt="The command loop: make-work plans, gh-issue-push files issues, gh-issue-pop opens a worktree, do-work implements, and a human gate sits between every step">
+  <h2>The four-command loop</h2>
+  <div class="looppair">
+    <img class="fig" src="figures/loop-u-left.svg" alt="The command loop, steps 1-5 flowing down: human decides to plan, /make-work, human approves plan, /gh-issue-push, human picks an issue">
+    <img class="fig" src="figures/loop-u-right.svg" alt="The command loop, steps 6-9 flowing up: /gh-issue-pop, human approves decomposition, /do-work, human reviews and merges">
+  </div>
+  <ul>
+    <li>Four commands: <b>/make-work</b> plans, <b>/gh-issue-push</b> files, <b>/gh-issue-pop</b> decomposes, <b>/do-work</b> ships.</li>
+    <li>A human gate between every command.</li>
+    <li>State lives in GitHub — each command starts fresh.</li>
+    <li>The merge closes the issue; the loop starts again on the next batch.</li>
+  </ul>
   <p>The whole talk in one picture. Every box is a command; every gate is the human.
   The commands themselves are markdown files, published in
   <a href="https://github.com/petar-djukic/coding-skills">petar-djukic/coding-skills</a>.</p>
@@ -60,7 +75,7 @@
   </ul>
   <p class="writeup">Write-up: <a href="https://meshintelligence.substack.com/p/how-to-loop-engineering?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Loop Engineering</a></p>
 
-  <h2>Skill 2 — Long-term memory management</h2>
+  <h2>Skill 2 — GitHub as the coding agent's long-term memory</h2>
   <img class="fig" src="figures/agents.svg" alt="Blackboard architecture: agents are the specialists, GitHub is the board, the human is the control component">
   <ul>
     <li>The executing session reads the issue body and the repository, and nothing else. Nothing from the planning conversation survives, and nothing needs to.</li>
@@ -69,7 +84,7 @@
   </ul>
   <p class="writeup">Write-up: <a href="https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use GitHub as Long-Term Memory for Coding Agents</a></p>
 
-  <h2>Skill 3 — Giving every task its own workspace</h2>
+  <h2>Skill 3 — A git worktree for every task</h2>
   <img class="fig" src="figures/article-worktrees-layout.svg" alt="Git worktree layout: one checkout per task, siblings of the main repository">
   <ul>
     <li>A worktree is born when the task starts and dies when the PR merges.</li>
@@ -78,7 +93,7 @@
   </ul>
   <p class="writeup">Write-up: <a href="https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use Git Worktrees with Coding Agents</a></p>
 
-  <h2>Skill 4 — Giving the agent temporal agency</h2>
+  <h2>Skill 4 — Recurring GitHub issues as standing work orders</h2>
   <img class="fig" src="figures/article-recurring-loop.svg" alt="Recurring issue loop: closing the work order creates the next instance">
   <ul>
     <li>A work order that outlives its completion: closing the issue creates the next instance.</li>
@@ -92,7 +107,9 @@
   a minimal spec-driven project with the full issue history, including the recurring reset
   issue that rewinds the demo. The write-up walks the whole session end to end and hands the
   same issue to GLM 5.2 on OpenCode:
-  <a href="https://meshintelligence.substack.com/p/spec-driven-development-with-github?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">Spec-Driven Development with GitHub, Claude, and GLM on OpenCode</a>.</p>
+  <a href="https://meshintelligence.substack.com/p/spec-driven-development-with-github?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">Spec-Driven Development with GitHub, Claude, and GLM on OpenCode</a> —
+  with timestamps into <a href="https://www.youtube.com/watch?v=KU_AsbMm6I0">the recording</a>
+  for every demo beat.</p>
 
   <div class="takehome">
     <p><strong>Take it home.</strong> The model does the work. You do the thinking. The
