@@ -150,6 +150,8 @@ mage -l
 
 ## The talk
 
+The talk page lives at
+[petar-djukic.github.io/sdd-hello-world](https://petar-djukic.github.io/sdd-hello-world/).
 `talks/2026-08-11-human-is-the-loop/` holds the slides, the demo runbook,
 and the prompt cards used on stage. Its
 [README](talks/2026-08-11-human-is-the-loop/README.md) covers serving the
