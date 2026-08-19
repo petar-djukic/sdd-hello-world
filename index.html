@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Human Is the Loop — Planning and Shipping Code with Claude Code and GitHub</title>
+<meta name="description" content="A live-demo talk on loop engineering with coding agents: the model writes its own prompts, GitHub issues carry long-term memory, every task gets a git worktree, and recurring issues give the agent standing work. Ottawa ML/AI Meetup, August 11, 2026.">
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1a1a; --muted: #555; --rule: #e2e2e2;
+    --link: #0b57a4; --card: #f7f7f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --fg: #e6e4df; --muted: #9a9a94; --rule: #2c2f35;
+            --link: #7ab3e0; --card: #1c1f24; }
+    img.fig { background: #e6e4df; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 17px/1.55 Georgia, 'Times New Roman', serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .25rem; }
+  h2 { font-size: 1.25rem; margin: 2.2rem 0 .6rem; border-top: 1px solid var(--rule); padding-top: 1.4rem; }
+  .sub { color: var(--muted); margin: 0 0 .2rem; }
+  .venue { color: var(--muted); font-size: .92rem; margin: 0 0 1.6rem; }
+  a { color: var(--link); }
+  img.fig { max-width: 100%; height: auto; display: block; margin: 1rem auto; border-radius: 6px; padding: 8px; }
+  ul { padding-left: 1.2rem; }
+  li { margin: .3rem 0; }
+  .writeup { font-size: .95rem; color: var(--muted); }
+  .takehome { background: var(--card); border-radius: 8px; padding: 1rem 1.4rem; margin-top: 1rem; }
+  footer { margin-top: 3rem; border-top: 1px solid var(--rule); padding-top: 1rem;
+           color: var(--muted); font-size: .92rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>The Human Is the Loop</h1>
+  <p class="sub">Planning and shipping code with Claude Code and GitHub</p>
+  <p class="venue">Petar Djukic · Ottawa ML/AI Meetup · August 11, 2026</p>
+
+  <p>Everyone says "loop engineering": replace yourself as the person who prompts the
+  agent. I am responsible for what ships, so I stay in control. This talk shows the four
+  skills that make that possible, live, on a real repository — four commands, GitHub,
+  markdown files, no framework. Every skill has a write-up on
+  <a href="https://meshintelligence.substack.com?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">Mesh Intelligence</a>.</p>
+
+  <h2>The loop</h2>
+  <img class="fig" src="figures/loop.svg" alt="The command loop: make-work plans, gh-issue-push files issues, gh-issue-pop opens a worktree, do-work implements, and a human gate sits between every step">
+  <p>The whole talk in one picture. Every box is a command; every gate is the human.
+  The commands themselves are markdown files, published in
+  <a href="https://github.com/petar-djukic/coding-skills">petar-djukic/coding-skills</a>.</p>
+
+  <h2>Skill 1 — Getting the model to write its own prompts</h2>
+  <img class="fig" src="figures/prompt-writing.svg" alt="The model drafts GitHub issues as prompts for its future self">
+  <ul>
+    <li>The commands are saved prompts — markdown files in <code>.claude/commands/</code>.</li>
+    <li>Every issue in my repositories was drafted by a model.</li>
+    <li>Live: <code>/make-work</code> proposes the batch; I approve; <code>/gh-issue-push</code> files it. Nothing exists until the plan is approved.</li>
+  </ul>
+  <p class="writeup">Write-up: <a href="https://meshintelligence.substack.com/p/how-to-loop-engineering?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Loop Engineering</a></p>
+
+  <h2>Skill 2 — Long-term memory management</h2>
+  <img class="fig" src="figures/agents.svg" alt="Blackboard architecture: agents are the specialists, GitHub is the board, the human is the control component">
+  <ul>
+    <li>The executing session reads the issue body and the repository, and nothing else. Nothing from the planning conversation survives, and nothing needs to.</li>
+    <li>The shape is forty years old: a blackboard — agents are the specialists, GitHub is the board, the control component is you.</li>
+    <li>Live: <code>/do-work</code> — implement, validate, PR opens. The agent never merges its own PR.</li>
+  </ul>
+  <p class="writeup">Write-up: <a href="https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use GitHub as Long-Term Memory for Coding Agents</a></p>
+
+  <h2>Skill 3 — Giving every task its own workspace</h2>
+  <img class="fig" src="figures/article-worktrees-layout.svg" alt="Git worktree layout: one checkout per task, siblings of the main repository">
+  <ul>
+    <li>A worktree is born when the task starts and dies when the PR merges.</li>
+    <li>Disposable workspaces mean parallel agents, safe breakage, and your checkout stays yours.</li>
+    <li>Live: the same issue handed to a second tool mid-task. The tool is disposable; the loop is not.</li>
+  </ul>
+  <p class="writeup">Write-up: <a href="https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use Git Worktrees with Coding Agents</a></p>
+
+  <h2>Skill 4 — Giving the agent temporal agency</h2>
+  <img class="fig" src="figures/article-recurring-loop.svg" alt="Recurring issue loop: closing the work order creates the next instance">
+  <ul>
+    <li>A work order that outlives its completion: closing the issue creates the next instance.</li>
+    <li>Nobody remembers to do the chore; the issue remembers for you. The upgrade issue has tracked this repo's tooling since March, eight runs in its log.</li>
+  </ul>
+  <p class="writeup">Write-up: <a href="https://meshintelligence.substack.com/p/how-to-use-github-to-give-a-coding?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use GitHub to Give a Coding Agent Recurring Work</a></p>
+
+  <h2>Run the demo yourself</h2>
+  <p>The demo repository is public:
+  <a href="https://github.com/petar-djukic/sdd-hello-world">petar-djukic/sdd-hello-world</a> —
+  a minimal spec-driven project with the full issue history, including the recurring reset
+  issue that rewinds the demo. The write-up walks the whole session end to end and hands the
+  same issue to GLM 5.2 on OpenCode:
+  <a href="https://meshintelligence.substack.com/p/spec-driven-development-with-github?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">Spec-Driven Development with GitHub, Claude, and GLM on OpenCode</a>.</p>
+
+  <div class="takehome">
+    <p><strong>Take it home.</strong> The model does the work. You do the thinking. The
+    commands are markdown files — copy them into your own repository. The write-ups, in
+    demo order:</p>
+    <ul>
+      <li><a href="https://meshintelligence.substack.com/p/how-to-loop-engineering?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Loop Engineering</a></li>
+      <li><a href="https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use GitHub as Long-Term Memory for Coding Agents</a></li>
+      <li><a href="https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use Git Worktrees with Coding Agents</a></li>
+      <li><a href="https://meshintelligence.substack.com/p/how-to-use-github-to-give-a-coding?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Use GitHub to Give a Coding Agent Recurring Work</a></li>
+      <li><a href="https://meshintelligence.substack.com/p/how-to-build-a-writing-pipeline?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Build a Writing Pipeline</a></li>
+      <li><a href="https://meshintelligence.substack.com/p/how-to-stay-on-track-with-opus-5?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">How to Stay on Track with Opus 5</a></li>
+    </ul>
+    <p>New to the publication?
+    <a href="https://meshintelligence.substack.com/p/start-here?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">Start Here</a>
+    maps the three tracks.</p>
+  </div>
+
+  <footer>
+    <p>Petar Djukic ·
+    <a href="https://meshintelligence.substack.com?utm_source=ghpages&amp;utm_campaign=human-is-the-loop">Mesh Intelligence</a> ·
+    <a href="https://github.com/petar-djukic">github.com/petar-djukic</a> ·
+    slides and demo runbook in
+    <a href="https://github.com/petar-djukic/sdd-hello-world/tree/main/talks/2026-08-11-human-is-the-loop">the talk directory</a></p>
+  </footer>
+</main>
+</body>
+</html>
