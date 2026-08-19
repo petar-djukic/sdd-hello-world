@@ -62,3 +62,16 @@ there; alt-tab never leaves the browser.
 The four prompt cards mirror the live slides one to one — what is on screen
 is what gets typed. Beat-by-beat flow, timings, and failure insurance:
 [DEMO-PLAN.md](DEMO-PLAN.md).
+
+## Write-ups
+
+Each of the four skills on stage has a longer written treatment:
+[How to Loop Engineering](https://meshintelligence.substack.com/p/how-to-loop-engineering?utm_source=github&utm_campaign=sdd-hello-world),
+[How to Use GitHub as Long-Term Memory for Coding Agents](https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory?utm_source=github&utm_campaign=sdd-hello-world),
+[How to Use Git Worktrees with Coding Agents](https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding?utm_source=github&utm_campaign=sdd-hello-world),
+and
+[How to Use GitHub to Give a Coding Agent Recurring Work](https://meshintelligence.substack.com/p/how-to-use-github-to-give-a-coding?utm_source=github&utm_campaign=sdd-hello-world).
+The talk itself is written up as
+[Spec-Driven Development with GitHub, Claude, and GLM on OpenCode](https://meshintelligence.substack.com/p/spec-driven-development-with-github?utm_source=github&utm_campaign=sdd-hello-world),
+and the tool switch in Skill 3 as
+[How to Code with GLM 5.2 on OpenCode](https://meshintelligence.substack.com/p/how-to-glm-52-on-opencode?utm_source=github&utm_campaign=sdd-hello-world).

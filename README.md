@@ -1,10 +1,14 @@
 # sdd-hello-world
 
-A working example of spec-driven development with a coding agent, small
-enough to read on a projector. Four slash commands drive the whole cycle in
-Claude Code or opencode: GitHub issues carry the memory between sessions,
-each task gets its own git worktree, and a pull request you review closes the
-loop. It is the demo repository for the talk
+A working example of
+[spec-driven development with a coding agent](https://meshintelligence.substack.com/p/spec-driven-development-with-github?utm_source=github&utm_campaign=sdd-hello-world),
+small enough to read on a projector. Four slash commands drive the whole
+cycle in Claude Code or
+[opencode](https://meshintelligence.substack.com/p/how-to-glm-52-on-opencode?utm_source=github&utm_campaign=sdd-hello-world):
+[GitHub issues carry the memory between sessions](https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory?utm_source=github&utm_campaign=sdd-hello-world),
+[each task gets its own git worktree](https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding?utm_source=github&utm_campaign=sdd-hello-world),
+and a pull request you review closes the loop. It is the demo repository for
+the talk
 [The Human Is the Loop](talks/2026-08-11-human-is-the-loop/), and the test
 fixture cobbler-scaffold scaffolds against in its end-to-end suite.
 
@@ -73,7 +77,8 @@ purpose.
 
 ### 4. Run the loop
 
-Open Claude Code (or opencode) in the repository and work the cycle:
+Open Claude Code (or opencode) in the repository and
+[work the cycle](https://meshintelligence.substack.com/p/how-to-loop-engineering?utm_source=github&utm_campaign=sdd-hello-world):
 
 | Command | What it does |
 |---|---|
@@ -93,8 +98,9 @@ scope it to release 02.0: one epic, and two issues under it,
 one per source file. Nothing else.
 ```
 
-The beat-by-beat runbook, including the reset that returns the repository to
-a clean slate afterwards, is in
+The beat-by-beat runbook, including the
+[recurring issue](https://meshintelligence.substack.com/p/how-to-use-github-to-give-a-coding?utm_source=github&utm_campaign=sdd-hello-world)
+that returns the repository to a clean slate afterwards, is in
 [talks/2026-08-11-human-is-the-loop/DEMO-PLAN.md](talks/2026-08-11-human-is-the-loop/DEMO-PLAN.md).
 
 ## Why spec-driven development needs a fixture like this
@@ -147,5 +153,14 @@ mage -l
 `talks/2026-08-11-human-is-the-loop/` holds the slides, the demo runbook,
 and the prompt cards used on stage. Its
 [README](talks/2026-08-11-human-is-the-loop/README.md) covers serving the
-deck. Every skill has a write-up at
-[meshintelligence.substack.com](https://meshintelligence.substack.com).
+deck. Every skill the talk demos has a write-up on
+[meshintelligence.substack.com](https://meshintelligence.substack.com?utm_source=github&utm_campaign=sdd-hello-world):
+
+| Write-up | What it covers |
+|---|---|
+| [How to Loop Engineering](https://meshintelligence.substack.com/p/how-to-loop-engineering?utm_source=github&utm_campaign=sdd-hello-world) | getting the model to write its own prompts |
+| [How to Use GitHub as Long-Term Memory for Coding Agents](https://meshintelligence.substack.com/p/how-to-use-github-as-long-term-memory?utm_source=github&utm_campaign=sdd-hello-world) | issues as the memory between sessions |
+| [How to Use Git Worktrees with Coding Agents](https://meshintelligence.substack.com/p/how-to-use-git-worktrees-with-coding?utm_source=github&utm_campaign=sdd-hello-world) | one workspace per task |
+| [How to Use GitHub to Give a Coding Agent Recurring Work](https://meshintelligence.substack.com/p/how-to-use-github-to-give-a-coding?utm_source=github&utm_campaign=sdd-hello-world) | recurring issues and temporal agency |
+| [How to Code with GLM 5.2 on OpenCode](https://meshintelligence.substack.com/p/how-to-glm-52-on-opencode?utm_source=github&utm_campaign=sdd-hello-world) | the second tool the demo hands the same issue to |
+| [Spec-Driven Development with GitHub, Claude, and GLM on OpenCode](https://meshintelligence.substack.com/p/spec-driven-development-with-github?utm_source=github&utm_campaign=sdd-hello-world) | the whole cycle, demonstrated on this repository |
